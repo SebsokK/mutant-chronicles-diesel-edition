@@ -36,6 +36,6 @@
   "secondaryTokenAttribute": "attributes.awareness.value",
 
   "url": "https://github.com/zefyriss-glitch/mutant-chronicles-diesel-edition",
-  "manifest": "https://github.com/zefyriss-glitch/mutant-chronicles-diesel-edition/blob/main/system.json",
+  "manifest": "https://raw.githubusercontent.com/zefyriss-glitch/mutant-chronicles-diesel-edition/main/system.json",
   "download": "https://github.com/zefyriss-glitch/mutant-chronicles-diesel-edition/releases/download/v0.1.0/mutant-chronicles-diesel-edition-v0.1.0.zip"
 }
