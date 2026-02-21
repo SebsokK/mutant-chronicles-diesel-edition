@@ -24,10 +24,16 @@
 
   "template": "template.json",
 
-  "documentTypes": {
-    "Actor": ["character", "npc"],
-    "Item": ["quality", "weapon", "armor", "talent", "spell", "vehicle", "equipment"]
+ "documentTypes": {
+  "Actor": {
+    "label": "Actor",
+    "types": ["character", "npc"]
   },
+  "Item": {
+    "label": "Item",
+    "types": ["quality", "weapon", "armor", "talent", "spell", "vehicle", "equipment"]
+  }
+},
 
   "gridDistance": 1,
   "gridUnits": "m",
