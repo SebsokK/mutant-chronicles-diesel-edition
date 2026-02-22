@@ -667,7 +667,10 @@ async function handleApplyDamage(message, state) {
           cancel: { label: "Cancel", callback: () => resolve(false) }
         },
         default: "apply"
-      }).render(true);
+      }, {
+    width: 520,
+    classes: ["mcde-dialog", "mcde-applydamage-dialog"]
+  }).render(true);
     });
   } catch (e) {
     console.error(e);
@@ -2750,6 +2753,9 @@ html.find(".mcde-skill-row").on("click", async (ev) => {
       cancel: { label: "Cancel" }
     },
     default: "roll"
+    }, {
+    width: 520,
+    classes: ["mcde-dialog", "mcde-skilltest-dialog"]
   }).render(true);
 }
 

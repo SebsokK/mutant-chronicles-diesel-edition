@@ -105,6 +105,15 @@
   border-radius: 6px;
 }
 
+/* Coloring */
+.mcde.sheet {
+  --mcde-copper-1: rgba(105, 60, 20, 0.95);
+  --mcde-copper-2: rgba(150, 90, 35, 0.95);
+  --mcde-copper-3: rgba(125, 75, 25, 0.95);
+
+  --mcde-copper-ink: rgba(255, 245, 220, 0.95); /* texte sur cuivre */
+  --mcde-copper-glow: rgba(210, 150, 70, 0.35);
+}
 
 /* Hit Locations coloring */
 /* Base style for wound box */
@@ -313,26 +322,90 @@
   background: rgba(0,0,0,0.10);
 }
 
-/* Header: slimmer + less shouty */
+/* === Attribute Header - Copper Industrial === */
 .mcde-attr-head{
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:8px;
   padding:4px 8px;
-  background: rgba(0,90,60,0.85);      /* ✅ vert foncé */
-  color: rgba(255,255,255,0.92);       /* ✅ texte clair */
+
+  /* Copper panel base */
+  background: linear-gradient(
+  to right,
+  rgba(105, 60, 20, 0.95),
+  rgba(150, 90, 35, 0.95),
+  rgba(125, 75, 25, 0.95)
+  );
+
+  color: rgba(255,255,255,0.95);
   font-weight:700;
-  letter-spacing:0.2px;
+  letter-spacing:0.3px;
   text-transform:uppercase;
-  cursor: pointer;
-  transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.05s ease;
+
+  cursor:pointer;
+
+  border-radius:4px;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.25),   /* top highlight */
+    inset 0 -1px 0 rgba(0,0,0,0.35),        /* bottom shadow */
+    0 1px 3px rgba(0,0,0,0.25);             /* subtle lift */
+
+  transition:
+    background 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.05s ease;
 }
 
 .mcde-attr-head:hover {
-  background: rgba(0,110,70,0.95); /* un peu plus lumineux que le vert actuel */
-  box-shadow: 0 0 8px rgba(0,140,90,0.35);
+  background: linear-gradient(
+    to right,
+    rgba(150, 90, 30, 0.6),
+    rgba(210, 150, 70, 0.95),
+    rgba(170, 110, 45, 0.95)
+  );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.35),
+    inset 0 -1px 0 rgba(0,0,0,0.4),
+    0 0 8px rgba(210, 150, 70, 0.35);
+
   transform: translateY(-1px);
+}
+
+/* Force layout: label left, value right */
+.mcde-attr-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+/* Ensure the value chip sticks to the right */
+.mcde-attr-head > *:last-child{
+  margin-left:auto;
+}
+
+/* Test Underline */
+.mcde-attr-head::after{
+  content:"";
+  display:block;
+  height:2px;
+  margin-top:4px;
+  border-radius:2px;
+
+  background: linear-gradient(
+    to right,
+    rgba(120,70,20,0.15),
+    rgba(180,120,50,0.75),
+    rgba(230,190,120,0.55),
+    rgba(180,120,50,0.75),
+    rgba(120,70,20,0.15)
+  );
+
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.25),
+    0 1px 3px rgba(0,0,0,0.25);
 }
 
 .mcde-attr-title{
@@ -391,8 +464,8 @@
   border-radius:50%;
 
   /* ✅ vert au lieu d’orange */
-  border:1px solid rgba(0,90,60,0.60);
-  background: rgba(0,90,60,0.18);
+  border:1px solid rgba(180,120,50,0.75);
+  background: rgba(120,70,20,0.15);
 
   flex:0 0 auto;
 }
@@ -425,8 +498,8 @@
   width:16px;
   height:16px;
 
-  /* ✅ accent vert */
-  accent-color: rgba(0,90,60,0.95);
+  accent-color: rgba(170,110,45,0.95);
+  filter: drop-shadow(0 1px 0 rgba(255,255,255,0.25));
 }
 
 .mcde-skill-num{
@@ -436,10 +509,23 @@
   text-align:center;
   border-radius:4px;
 
-  /* ✅ même look que l’attribut */
-  border:1px solid rgba(255,255,255,0.18);
-  background: rgba(0,0,0,0.18);
-  color: rgba(255,255,255,0.90);
+  border:1px solid rgba(120,70,20,0.45);
+
+  background: linear-gradient(
+    to bottom,
+    rgba(150,90,35,0.25),
+    rgba(90,55,20,0.35)
+  );
+
+  color: rgba(255,245,220,0.95);
+
+  text-shadow:
+    0 1px 0 rgba(0,0,0,0.6),
+    0 0 2px rgba(0,0,0,0.4);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.25),
+    0 1px 2px rgba(0,0,0,0.25);
 }
 
 .mcde-skill-tn{
@@ -447,8 +533,11 @@
   text-align:center;
   font-weight:800;
 
-  /* ✅ vert au lieu d’orange */
-  color: rgba(0,90,60,0.95);
+  color: rgba(150,90,35,0.98);
+
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.35),
+    0 0 2px rgba(0,0,0,0.3);
 
   line-height:1;
 }
@@ -461,8 +550,18 @@
 
 /* Signature feedback stays, but a tad subtler */
 .mcde-skill-row.is-signature .mcde-skill-dot{
-  background: rgba(255,255,255,0.60);
-  border-color: rgba(255,255,255,0.85);
+  background: linear-gradient(
+    to bottom,
+    rgba(230,190,120,0.65),
+    rgba(180,120,50,0.9),
+    rgba(120,70,20,0.85)
+  );
+
+  border-color: rgba(120,70,20,0.75);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.25),
+    0 0 4px rgba(210,150,70,0.25);
 }
 
 .mcde-sig-hint{
@@ -481,16 +580,156 @@
   opacity: 1;
 }
 
-/* Damage Bonus */
-.mcde-damage-bonus {
-  background: rgba(0,90,60,0.15);
-  border: 1px solid rgba(0,90,60,0.5);
-  padding: 8px;
+/* Tab Couleur */
+/* Remove Foundry red tab highlight */
+.mcde.sheet .tabs .item.active,
+.mcde.sheet .tabs .item:hover {
+  color: inherit;
+  border-color: transparent;
+}
+
+/* === Base Tabs === */
+.mcde.sheet .tabs .item {
+  position: relative;
+  font-family: "Bank Gothic", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 6px 14px;
+  transition: all 0.15s ease;
+}
+
+.mcde.sheet .tabs .item:hover {
+  color: rgba(170,110,45,0.95);
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.3),
+    0 0 3px rgba(210,150,70,0.25);
+}
+
+.mcde.sheet .tabs .item.active {
+  background: linear-gradient(
+    to bottom,
+    rgba(160,95,40,0.95),
+    rgba(110,65,25,0.98)
+  );
+
+  color: rgba(255,245,220,1);
+
+  border-radius: 4px;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.25),
+    inset 0 -1px 0 rgba(0,0,0,0.5),
+    0 2px 4px rgba(0,0,0,0.4);
+
+  transform: translateY(1px);
+}
+
+.mcde.sheet .tabs .item.active {
+  transform: translateY(1px);
+}
+
+/* === TAB BAR BACKGROUND === */
+.mcde.sheet .tabs {
+  background: linear-gradient(
+    to bottom,
+    rgba(70,40,20,0.95),
+    rgba(50,30,15,0.98)
+  );
+
+  padding: 6px 8px;
   border-radius: 6px;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.15),
+    inset 0 -2px 4px rgba(0,0,0,0.6);
+}
+
+.mcde.sheet .tabs .item {
+  color: rgba(255,245,220,0.9);
+  font-family: "Bank Gothic", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.mcde.sheet .tabs .item:hover {
+  color: rgba(230,190,120,0.95);
+  text-shadow:
+    0 0 6px rgba(210,150,70,0.4);
+}
+
+.mcde.sheet .tabs::after {
+  content:"";
+  display:block;
+  height:2px;
+  margin-top:6px;
+
+  background: linear-gradient(
+    to right,
+    rgba(120,70,20,0.2),
+    rgba(190,130,60,0.9),
+    rgba(120,70,20,0.2)
+  );
+}
+
+/* === Damage Bonus === */
+/* === Damage Bonus - Oxidized Copper Panel === */
+.mcde-damage-bonus {
+
+  background: linear-gradient(
+    to bottom,
+    rgba(60, 45, 35, 0.96),
+    rgba(95, 75, 55, 0.95) 40%,
+    rgba(145, 125, 100, 0.65) 60%,
+    rgba(85, 65, 45, 0.95)
+  );
+
+  border: 1px solid rgba(40, 30, 20, 0.85);
+
+  border-radius: 6px;
+  padding: 8px;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.15),
+    inset 0 -1px 0 rgba(0,0,0,0.45),
+    0 2px 6px rgba(0,0,0,0.35);
 }
 
 .mcde-damage-bonus h3 {
-  color: black;
+  color: rgba(255,245,220,0.95);
+  text-shadow:
+    0 1px 0 rgba(0,0,0,0.6),
+    0 0 3px rgba(0,0,0,0.3);
+}
+
+/* subtle copper underline vibe without overpowering */
+.mcde-damage-bonus::after{
+  content:"";
+  display:block;
+  height:2px;
+  margin-top:6px;
+  border-radius:2px;
+
+  background: linear-gradient(
+    to right,
+    rgba(120,70,20,0.15),
+    rgba(180,120,50,0.75),
+    rgba(230,190,120,0.55),
+    rgba(180,120,50,0.75),
+    rgba(120,70,20,0.15)
+  );
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.18),
+    0 1px 3px rgba(0,0,0,0.22);
+}
+
+.mcde-damage-bonus .mcde-damage-row {
+  background: rgba(235, 225, 210, 0.18);
+  border-radius: 4px;
+  padding: 4px 6px;
+}
+
+.mcde.sheet {
+  --mcde-accent: rgba(170,110,45,0.95);
 }
 
 .mcde-damage-row {
@@ -1100,4 +1339,282 @@
 .mcde.sheet.actor.npc .editor,
 .mcde.sheet.actor.nemesis .editor {
   min-height: 200px;
+}
+
+@font-face{
+  font-family: "Bank Gothic";
+  src: url("/systems/mutant-chronicles-diesel-edition/assets/font/bankgothicmedium.ttf");
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* === TITRES === */
+.window-title,
+.sheet-header h1,
+.sheet-header h2,
+.sheet-header h3 {
+  font-family: "Bank Gothic", sans-serif !important;
+}
+
+/* === TABS === */
+.sheet-tabs .item,
+.tabs .item {
+  font-family: "Bank Gothic", sans-serif !important;
+}
+
+/* === TRAITS / TAGS RESTENT NORMAUX === */
+.mcde.sheet .trait,
+.mcde.sheet .tag,
+.mcde.sheet .qualities span {
+  font-family: var(--font-primary) !important;
+}
+
+/* === MCDE: Section titles in sheet body === */
+.mcde.sheet .sheet-body h3 {
+  font-family: "Bank Gothic", sans-serif !important;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.mcde.sheet h1 {
+  border-bottom: 1px solid rgba(120, 120, 120, 0.4);
+  padding-bottom: 4px;
+}
+
+/* === Engraved metal effect + copper underline === */
+.mcde.sheet .sheet-body h3 {
+  position: relative;
+  padding-bottom: 6px; /* room for underline */
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.35),   /* highlight edge */
+    0 -1px 0 rgba(0,0,0,0.35),        /* shadow edge */
+    0 2px 3px rgba(0,0,0,0.25);       /* depth */
+}
+
+.mcde.sheet .sheet-body h3::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 2px;
+  border-radius: 2px;
+
+  /* copper-ish underline with subtle shine */
+  background: linear-gradient(
+    to right,
+    rgba(120, 70, 20, 0.15),
+    rgba(180, 120, 50, 0.75),
+    rgba(230, 190, 120, 0.55),
+    rgba(180, 120, 50, 0.75),
+    rgba(120, 70, 20, 0.15)
+  );
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.25),
+    0 1px 3px rgba(0,0,0,0.25);
+}
+
+/* Section titles only */
+.mcde.sheet .sheet-body h3 {
+  font-family: "Bank Gothic", sans-serif;
+  position: relative;
+  padding-bottom: 6px;
+
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.35),
+    0 -1px 0 rgba(0,0,0,0.35);
+}
+
+/* Copper underline */
+.mcde.sheet .sheet-body h3::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  border-radius: 2px;
+
+  background: linear-gradient(
+    to right,
+    rgba(120,70,20,0.2),
+    rgba(190,130,60,0.8),
+    rgba(120,70,20,0.2)
+  );
+}
+
+.mcde.sheet .window-content {
+  background-image: url("/systems/mutant-chronicles-diesel-edition/assets/sheet/backgroundmetal.jpg");
+  background-repeat: repeat;
+  background-size: 600px;
+}
+
+/* =========================================
+   MCDE Dialog Theme (Skill Test, etc.)
+   ========================================= */
+
+.mcde-dialog .window-content{
+  /* texture acier brossé claire */
+  background-image: url("/systems/mutant-chronicles-diesel-edition/assets/sheet/backgroundmetal.png");
+  background-repeat: repeat;
+  background-size: 600px;
+  background-color: transparent;
+}
+
+/* Header du Dialog (barre de titre) */
+.mcde-dialog .window-header{
+  background: linear-gradient(
+    to bottom,
+    rgba(70,40,20,0.95),
+    rgba(50,30,15,0.98)
+  );
+  border-bottom: 1px solid rgba(0,0,0,0.35);
+}
+.mcde-dialog .window-title{
+  font-family: "Bank Gothic", sans-serif !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(255,245,220,0.95);
+  text-shadow: 0 1px 0 rgba(0,0,0,0.6);
+}
+
+/* Contenu du formulaire */
+.mcde-skilltest-dialog .mcde-roll-dialog{
+  font-family: var(--font-primary);
+}
+
+/* Mini-titres dans la fenêtre */
+.mcde-skilltest-dialog .mcde-roll-dialog div[style*="font-weight:700"],
+.mcde-skilltest-dialog .mcde-roll-dialog div[style*="font-weight:600"]{
+  font-family: "Bank Gothic", sans-serif !important;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* HR -> cuivre discret */
+.mcde-skilltest-dialog .mcde-roll-dialog hr{
+  border: none;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(
+    to right,
+    rgba(120,70,20,0.15),
+    rgba(180,120,50,0.75),
+    rgba(230,190,120,0.55),
+    rgba(180,120,50,0.75),
+    rgba(120,70,20,0.15)
+  );
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.18),
+    0 1px 3px rgba(0,0,0,0.22);
+  margin: 8px 0;
+}
+
+/* Inputs / selects : petite vibe métal */
+.mcde-skilltest-dialog select,
+.mcde-skilltest-dialog input[type="text"],
+.mcde-skilltest-dialog input[type="number"]{
+  border: 1px solid rgba(120,70,20,0.45);
+  background: linear-gradient(
+    to bottom,
+    rgba(150,90,35,0.22),
+    rgba(90,55,20,0.32)
+  );
+  color: rgba(255,245,220,0.95);
+  border-radius: 4px;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.55);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
+}
+
+/* Checkbox accent cuivre (Chrome/Edge ok) */
+.mcde-skilltest-dialog input[type="checkbox"]{
+  accent-color: rgba(170,110,45,0.95);
+}
+
+/* Boutons : cuivre “plaque” */
+.mcde-dialog .dialog-buttons button{
+  font-family: "Bank Gothic", sans-serif !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+
+  color: rgba(255,245,220,0.95);
+  background: linear-gradient(
+    to bottom,
+    rgba(160,95,40,0.95),
+    rgba(110,65,25,0.98)
+  );
+  border: 1px solid rgba(40,30,20,0.75);
+  border-radius: 6px;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.20),
+    inset 0 -1px 0 rgba(0,0,0,0.45),
+    0 2px 6px rgba(0,0,0,0.25);
+
+  transition: transform 0.06s ease, filter 0.12s ease, box-shadow 0.12s ease;
+}
+
+.mcde-dialog .dialog-buttons button:hover{
+  filter: brightness(1.06);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.25),
+    inset 0 -1px 0 rgba(0,0,0,0.5),
+    0 0 10px rgba(210,150,70,0.25),
+    0 2px 6px rgba(0,0,0,0.25);
+  transform: translateY(-1px);
+}
+
+.mcde-dialog .dialog-buttons button:active{
+  transform: translateY(0px);
+  filter: brightness(0.98);
+}
+
+/* Kill Foundry translucent dialog content for MCDE dialogs */
+.mcde-dialog .window-content{
+  background-color: rgba(210,210,205,0.98) !important; /* base claire opaque */
+  background-blend-mode: normal !important;
+  backdrop-filter: none !important;
+}
+
+/* === Skill Test Inputs / Selects - Darker & Clear === */
+.mcde-skilltest-dialog select,
+.mcde-skilltest-dialog input[type="number"],
+.mcde-skilltest-dialog input[type="text"]{
+
+  background: linear-gradient(
+    to bottom,
+    rgba(80,55,35,0.95),
+    rgba(55,38,24,0.98)
+  );
+
+  color: rgba(255,245,220,0.95);
+
+  border: 1px solid rgba(120,70,20,0.85);
+
+  border-radius: 5px;
+
+  text-shadow: 0 1px 0 rgba(0,0,0,0.7);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.15),
+    inset 0 -1px 0 rgba(0,0,0,0.6),
+    0 1px 3px rgba(0,0,0,0.4);
+
+  padding: 2px 6px;
+}
+
+.mcde-skilltest-dialog select{
+  background-color: rgba(70,45,28,0.98) !important;
+  color: rgba(255,245,220,0.95) !important;
+}
+
+.mcde-skilltest-dialog select option{
+  background-color: rgba(70,45,28,0.98);
+  color: rgba(255,245,220,0.95);
+}
+
+.mcde-skilltest-dialog select option:checked{
+  background: rgba(150,90,35,0.95);
+  color: rgba(255,245,220,1);
 }
