@@ -35,7 +35,7 @@
   "primaryTokenAttribute": "attributes.physique.value",
   "secondaryTokenAttribute": "attributes.awareness.value",
 
-  "url": "",
-  "manifest": "",
-  "download": ""
+  "url": "https://raw.githubusercontent.com/zefyriss-glitch/mutant-chronicles-diesel-edition",
+  "manifest": "https://raw.githubusercontent.com/zefyriss-glitch/mutant-chronicles-diesel-edition/main/system.json",
+  "download": "mutant-chronicles-diesel-edition-v0.1.1.zip"
 }
