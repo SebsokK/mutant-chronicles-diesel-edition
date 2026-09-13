@@ -1,0 +1,24 @@
+<div class="flexcol">
+
+  <header class="sheet-header flexrow" style="gap:12px; align-items:center;">
+    <img class="profile-img" src="{{item.img}}" data-action="editImage" data-field="img" width="64" height="64"/>
+    <div class="flexcol" style="flex:1;">
+      <h1 style="margin:0;">
+        <input name="name" type="text" value="{{item.name}}" placeholder="Quality Name"/>
+      </h1>
+      <div style="opacity:0.8; font-size:12px;">Quality</div>
+    </div>
+  </header>
+
+  <section class="sheet-body flexcol" style="flex:1; min-height:360px;">
+<h3 style="margin-top:8px;">Description</h3>
+    <div style="flex:1; min-height:300px;">
+      {{#if editable}}
+      <prose-mirror name="system.description" button="true" toggled="true" editable="{{editable}}" value="{{system.description}}">{{{enriched.description}}}</prose-mirror>
+      {{else}}
+      <div class="editor"><div class="editor-content ProseMirror">{{{enriched.description}}}</div></div>
+      {{/if}}
+    </div>
+  </section>
+
+</div>

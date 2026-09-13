@@ -1,0 +1,136 @@
+{
+  "id": "mutant-chronicles-diesel-edition",
+  "title": "Mutant Chronicles – Diesel Edition",
+  "description": "A Foundry VTT system for Mutant Chronicles 2D20, Diesel Edition.",
+  "version": "0.1.6",
+  "authors": [
+    {
+      "name": "SokK & ChatGPT"
+    }
+  ],
+
+  "background": "systems/mutant-chronicles-diesel-edition/assets/metamc.png",
+
+  "media": [
+    {
+      "type": "setup",
+      "url": "systems/mutant-chronicles-diesel-edition/assets/metamc.png",
+      "thumbnail": "systems/mutant-chronicles-diesel-edition/assets/metamc.png",
+      "caption": "Mutant Chronicles – Diesel Edition"
+    }
+  ],
+
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14"
+  },
+
+  "esmodules": [
+    "module/mcde.mjs"
+  ],
+
+  "styles": [
+    "css/mcde.css"
+  ],
+
+  "template": "template.json",
+
+  "documentTypes": {
+  "Actor": {
+    "character": {},
+    "npc": {},
+    "nemesis": {},
+    "vehicle": {}
+  },
+  "Item": {
+    "quality": {},
+    "weapon": {},
+    "armor": {},
+    "talent": {},
+    "spell": {},
+    "equipment": {}
+  }
+},
+
+  "grid": {
+    "distance": 1,
+    "units": "m"
+  },
+
+  "primaryTokenAttribute": "attributes.physique.value",
+  "secondaryTokenAttribute": "attributes.awareness.value",
+
+    "packs": [
+    {
+      "name": "critical-injuries",
+      "label": "[Important] Critical Injuries Table",
+      "path": "packs/important-critical-injuries-table",
+      "type": "RollTable"
+    },
+    {
+      "name": "armors-equipment",
+      "label": "Armors & Equipment",
+      "path": "packs/armors-and-equipment",
+      "type": "Item"
+    },
+    {
+      "name": "dark-symmetry-pregen",
+      "label": "Dark Symmetry Pre-Generated Characters",
+      "path": "packs/dark-symmetry-pre-generated-characters",
+      "type": "Actor"
+    },
+    {
+      "name": "macros",
+      "label": "Mutant Chronicles Macros",
+      "path": "packs/mutant-chronicles-macros",
+      "type": "Macro"
+    },
+    {
+      "name": "npcs",
+      "label": "NPCs",
+      "path": "packs/npcs",
+      "type": "Actor"
+    },
+    {
+      "name": "special-abilities",
+      "label": "Special Abilities",
+      "path": "packs/special-abilities",
+      "type": "Item"
+    },
+    {
+      "name": "talents-spells",
+      "label": "Talents & Spells",
+      "path": "packs/talents-and-spells",
+      "type": "Item"
+    },
+    {
+      "name": "vehicle-qualities-weapons",
+      "label": "Vehicle Qualities & Weapons",
+      "path": "packs/vehicle-qualities-and-weapons",
+      "type": "Item"
+    },
+    {
+      "name": "vehicles-luna-pd",
+      "label": "Vehicles (Luna PD)",
+      "path": "packs/vehicles-luna-pd",
+      "type": "Actor"
+    },
+    {
+      "name": "weapons-qualities",
+      "label": "Weapons & Weapons Qualities",
+      "path": "packs/weapons-and-weapons-qualities",
+      "type": "Item"
+    },
+    {
+      "name": "scenes",
+      "label": "Scenes",
+      "path": "packs/scenes",
+      "type": "Scene"
+    }
+  ],
+
+
+  "url": "https://github.com/zefyriss-glitch/mutant-chronicles-diesel-edition",
+  "manifest": "https://raw.githubusercontent.com/zefyriss-glitch/mutant-chronicles-diesel-edition/main/system.json",
+  "download": "https://github.com/zefyriss-glitch/mutant-chronicles-diesel-edition/releases/download/v0.1.6/mutant-chronicles-diesel-edition-v0.1.6.zip"
+}

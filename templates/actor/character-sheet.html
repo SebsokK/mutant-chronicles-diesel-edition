@@ -1,0 +1,900 @@
+<div class="flexcol">
+
+<style>
+  .mcde-dread-box {
+    width:12px;
+    height:12px;
+    border:1px solid rgba(120,0,0,0.8);
+    border-radius:2px;
+    cursor:pointer;
+    background:rgba(255,255,255,0.25);
+  }
+  .mcde-dread-box.filled { background:rgba(160,0,0,0.75); }
+
+  /* Chronicle Points track */
+  .mcde-chronicle-box{
+    height:10px;
+    min-height:10px;
+    border:1px solid rgba(0,0,0,0.25);
+    border-radius:2px;
+    cursor:pointer;
+    background:rgba(255,255,255,0.15);
+    display:block;
+  }
+  .mcde-chronicle-box.filled{ background:rgba(0,90,60,0.85); }
+
+  /* Column dividers */
+  .mcde-col { padding-right:10px; }
+  .mcde-col-left,
+  .mcde-col-middle {
+    border-right:1px solid rgba(0,0,0,0.15);
+    padding-right:12px;
+    margin-right:6px;
+  }
+
+</style>
+
+
+<header class="sheet-header mcde-header">
+
+  <!-- Avatar -->
+  <div class="mcde-avatar-frame">
+  <img class="profile-img mcde-avatar" src="{{actor.img}}" data-action="editImage" data-field="img" />
+  </div>
+
+  <!-- Right side -->
+  <div class="flexcol" style="flex:1; min-width:0; gap:8px;">
+
+    <!-- Name -->
+    <h1 class="mcde-nameplate" style="margin:0;">
+      <input name="name" type="text" value="{{actor.name}}" placeholder="Character Name"/>
+    </h1>
+
+    <!-- Chronicle Points bar (full width under nameplate) -->
+<div class="mcde-cpbar">
+
+  <div class="mcde-cpbar-title">Chronicle Points</div>
+
+  <div class="mcde-cpbar-total">
+    <label>Total</label>
+    <input type="number"
+           name="system.chronicle_points.max"
+           value="{{system.chronicle_points.max}}"
+           min="0">
+  </div>
+
+  <div class="mcde-cpbar-track mcde-chronicle-track">
+    {{#each chronicleBoxes as |b|}}
+      <div class="mcde-chronicle-box {{#if b.filled}}filled{{/if}}"
+           data-index="{{b.index}}">
+      </div>
+    {{/each}}
+  </div>
+
+</div>
+
+    <!-- Three-column header grid -->
+    <div style="display:grid; grid-template-columns: 1.2fr 1fr 0.9fr; gap:12px; align-items:start;">
+
+      <!-- ================= LEFT: IDENTITY ================= -->
+      <div class="flexcol mcde-col mcde-col-left">
+
+        <!-- Heritage -->
+        <div class="flexrow" style="gap:8px; align-items:center;">
+          <label style="flex:0 0 auto; opacity:0.8;">Heritage</label>
+          <input type="text"
+                 name="system.faction"
+                 value="{{system.faction}}"
+                 placeholder="Heritage"
+                 style="flex:1; min-width:0;" />
+        </div>
+
+        <!-- Traits (tags) -->
+        <div class="flexcol" style="gap:6px;">
+<div class="flexrow" style="align-items:center;">
+  <label style="flex:1; opacity:0.8;">Traits</label>
+  <a class="mcde-trait-add" title="Add trait" style="flex:0 0 auto;">+</a>
+</div>
+
+          <div class="mcde-traits" style="display:flex; flex-wrap:wrap; gap:6px;">
+            {{#if system.traits.length}}
+              {{#each system.traits as |t i|}}
+                <span class="mcde-trait-tag"
+                      style="display:inline-flex; align-items:center; gap:6px; padding:2px 8px; border:1px solid rgba(120,0,0,0.35); border-radius:999px; font-size:12px;">
+                  {{t}}
+                  <a class="mcde-trait-remove" data-index="{{i}}" title="Remove">
+                    <i class="fas fa-times"></i>
+                  </a>
+                </span>
+              {{/each}}
+            {{else}}
+              <small style="opacity:0.65;">No traits yet.</small>
+            {{/if}}
+          </div>
+        </div>
+
+        <!-- Chronicle Points -->
+
+      </div>
+
+      <!-- ================= MIDDLE: DREAD ================= -->
+      <div class="flexcol mcde-col mcde-col-middle">
+        <div class="mcde-minihead">Dread</div>
+
+        <div class="mcde-dread" style="display:flex; flex-direction:column; gap:6px;">
+          {{#each dreadRows as |row|}}
+<div class="mcde-dread-row" style="display:flex; align-items:center; gap:8px;">
+  <div style="width:64px; opacity:0.75; font-size:12px; text-align:right; white-space:nowrap;">
+    {{row.label}}
+  </div>
+
+  <div style="display:flex; gap:4px; flex-wrap:wrap; flex:1;">
+    {{#each row.boxes as |b|}}
+      <div class="mcde-dread-box {{#if b.filled}}filled{{/if}}"
+           data-level="{{b.level}}"
+           data-index="{{b.index}}"
+           title="Dread {{b.level}}-{{b.index}}">
+      </div>
+    {{/each}}
+  </div>
+
+  {{#if row.ledLabel}}
+    <div class="mcde-dread-led {{#if row.ledOn}}on{{/if}}"
+         data-led="{{row.ledLabel}}"
+         title="{{row.ledLabel}}">
+      {{row.ledLabel}}
+    </div>
+  {{/if}}
+</div>
+          {{/each}}
+
+          <div style="opacity:0.8; font-size:12px; margin-top:2px;">
+            Current: <strong>{{system.dread.value}}</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= RIGHT: XP ================= -->
+      <div class="flexcol mcde-col">
+        <div class="flexcol" style="gap:6px;">
+          <div class="mcde-minihead">XP</div>
+
+          <div class="flexrow" style="gap:8px; align-items:center; justify-content:space-between;">
+            <label style="flex:1;">Current</label>
+            <input type="number" name="system.xp.current" value="{{system.xp.current}}" style="width:90px;">
+          </div>
+
+          <div class="flexrow" style="gap:8px; align-items:center; justify-content:space-between;">
+            <label style="flex:1;">Spent</label>
+            <input type="number" name="system.xp.spent" value="{{system.xp.spent}}" style="width:90px;">
+          </div>
+
+          <div class="flexrow" style="gap:8px; align-items:center; justify-content:space-between;">
+            <label style="flex:1; opacity:0.8;">Total</label>
+            <strong>{{xpTotal}}</strong>
+          </div>
+        </div>
+      </div>
+
+    </div> <!-- /grid -->
+
+  </div> <!-- /Right side -->
+
+</header>
+
+  <!-- Tabs -->
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="stats">Stats</a>
+    <a class="item" data-tab="combat">Combat &amp; Gear</a>
+    <a class="item" data-tab="talents">Talents &amp; Equipment</a>
+    <a class="item" data-tab="spells">Spells</a>
+    <a class="item" data-tab="notes">Notes</a>
+  </nav>
+
+<section class="sheet-body">
+  <div class="tab" data-group="primary" data-tab="stats">
+
+    <div class="mcde-stats-cols">
+
+      <!-- ================= LEFT COLUMN ================= -->
+      <div class="mcde-stats-col">
+        {{#each statsLeft as |block|}}
+
+        <section class="mcde-attr-card">
+
+          <!-- Attribute Header (CLICKABLE) -->
+          <header class="mcde-attr-head"
+                  data-attr="{{block.attribute.key}}">
+                              <div class="mcde-attr-title">
+              {{block.attribute.label}}
+            </div>
+                <input class="mcde-attr-input"
+                   type="number"
+                   name="system.attributes.{{block.attribute.key}}.value"
+                   value="{{block.attribute.value}}"
+                   min="0" max="20" step="1"
+                   data-action="attr-change"
+                   data-attr="{{block.attribute.key}}" />
+
+          </header>
+
+          <!-- Skills -->
+          <div class="mcde-skill-list">
+
+  <!-- Column hints (once per attribute block) -->
+  <div class="mcde-skill-colheads">
+    <div class="mcde-skill-colheads-left"></div>
+    <div class="mcde-skill-colheads-right">
+      <div class="mcde-skill-colhead mcde-col-sig">Sig</div>
+      <div class="mcde-skill-colhead mcde-col-exp">Exp</div>
+      <div class="mcde-skill-colhead mcde-col-foc">Foc</div>
+      <div class="mcde-skill-colhead mcde-col-tn">TN</div>
+    </div>
+  </div>
+
+            {{#each block.skills as |sk|}}
+
+            <div class="mcde-skill-row
+              {{#if sk.isAdvanced}}is-advanced{{/if}}
+              {{#if sk.isSignature}}is-signature{{/if}}
+              {{#if sk.hasTraining}}is-trained{{/if}}"
+                 data-attr="{{block.attribute.key}}"
+                 data-skill="{{sk.key}}">
+
+              <div class="mcde-skill-name">
+                <span class="mcde-skill-dot"></span>
+                <span class="mcde-skill-label">{{sk.label}}</span>
+                {{#if sk.isAdvanced}}
+                  <span class="mcde-skill-adv">(advanced)</span>
+                {{/if}}
+              </div>
+
+              <div class="mcde-skill-controls">
+
+                <input type="checkbox"
+                       class="mcde-sig-toggle"
+                       data-action="toggle-signature"
+                       data-skill="{{sk.key}}"
+                       {{#if sk.isSignature}}checked{{/if}}
+                       {{#if sk.sigDisabled}}disabled{{/if}} />
+
+                <input class="mcde-skill-num"
+                       type="number"
+                       name="system.skills.{{sk.key}}.expertise"
+                       value="{{sk.expertise}}"
+                       min="0" max="{{sk.expMax}}" step="1"
+                       data-action="skill-number"
+                       data-skill="{{sk.key}}"
+                       data-field="expertise" />
+
+                <input class="mcde-skill-num"
+                       type="number"
+                       name="system.skills.{{sk.key}}.focus"
+                       value="{{sk.focus}}"
+                       min="0" max="{{sk.focusMax}}" step="1"
+                       data-action="skill-number"
+                       data-skill="{{sk.key}}"
+                       data-field="focus" />
+
+                <div class="mcde-skill-tn">
+                  {{sk.tn}}
+                </div>
+
+              </div>
+            </div>
+
+            {{/each}}
+          </div>
+        </section>
+
+        {{/each}}
+      </div>
+
+
+      <!-- ================= RIGHT COLUMN ================= -->
+      <div class="mcde-stats-col">
+        {{#each statsRight as |block|}}
+
+        <section class="mcde-attr-card">
+
+          <!-- Attribute Header (CLICKABLE) -->
+          <header class="mcde-attr-head"
+                  data-attr="{{block.attribute.key}}">
+            <div class="mcde-attr-title">
+              {{block.attribute.label}}
+            </div>
+
+            <input class="mcde-attr-input"
+                   type="number"
+                   name="system.attributes.{{block.attribute.key}}.value"
+                   value="{{block.attribute.value}}"
+                   min="0" max="20" step="1"
+                   data-action="attr-change"
+                   data-attr="{{block.attribute.key}}" />
+          </header>
+
+          <!-- Skills -->
+          <div class="mcde-skill-list">
+
+  <!-- Column hints (once per attribute block) -->
+  <div class="mcde-skill-colheads">
+    <div class="mcde-skill-colheads-left"></div>
+    <div class="mcde-skill-colheads-right">
+      <div class="mcde-skill-colhead mcde-col-sig">Sig</div>
+      <div class="mcde-skill-colhead mcde-col-exp">Exp</div>
+      <div class="mcde-skill-colhead mcde-col-foc">Foc</div>
+      <div class="mcde-skill-colhead mcde-col-tn">TN</div>
+    </div>
+  </div>
+
+            {{#each block.skills as |sk|}}
+
+            <div class="mcde-skill-row
+            {{#if sk.isAdvanced}}is-advanced{{/if}}
+            {{#if sk.isSignature}}is-signature{{/if}}
+            {{#if sk.hasTraining}}is-trained{{/if}}"
+                 data-attr="{{block.attribute.key}}"
+                 data-skill="{{sk.key}}">
+
+              <div class="mcde-skill-name">
+                <span class="mcde-skill-dot"></span>
+                <span class="mcde-skill-label">{{sk.label}}</span>
+                {{#if sk.isAdvanced}}
+                  <span class="mcde-skill-adv">(advanced)</span>
+                {{/if}}
+              </div>
+
+              <div class="mcde-skill-controls">
+
+                <input type="checkbox"
+                       class="mcde-sig-toggle"
+                       data-action="toggle-signature"
+                       data-skill="{{sk.key}}"
+                       {{#if sk.isSignature}}checked{{/if}}
+                       {{#if sk.sigDisabled}}disabled{{/if}} />
+
+                <input class="mcde-skill-num"
+                       type="number"
+                       name="system.skills.{{sk.key}}.expertise"
+                       value="{{sk.expertise}}"
+                       min="0" max="{{sk.expMax}}" step="1"
+                       data-action="skill-number"
+                       data-skill="{{sk.key}}"
+                       data-field="expertise" />
+
+                <input class="mcde-skill-num"
+                       type="number"
+                       name="system.skills.{{sk.key}}.focus"
+                       value="{{sk.focus}}"
+                       min="0" max="{{sk.focusMax}}" step="1"
+                       data-action="skill-number"
+                       data-skill="{{sk.key}}"
+                       data-field="focus" />
+
+                <div class="mcde-skill-tn">
+                  {{sk.tn}}
+                </div>
+
+              </div>
+            </div>
+
+            {{/each}}
+          </div>
+        </section>
+
+        {{/each}}
+      </div>
+
+    </div>
+
+    <div class="mcde-sig-hint">
+      Signature skills: <b>{{signatureCount}}</b> / 3
+    </div>
+
+  </div>
+
+    <div class="tab" data-group="primary" data-tab="combat">
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; align-items:start;">
+
+    <!-- ================= LEFT COLUMN ================= -->
+    <div style="min-width:0;">
+
+      <h3 style="margin:0;">Hit Locations</h3>
+<div class="mcde-hitloc-panel">
+      {{> "systems/mutant-chronicles-diesel-edition/templates/partials/combat-locations.html"}}
+</div>
+      <!-- WOUNDS ARE INCLUDED IN PARTIAL -->
+    </div>
+
+
+    <!-- ================= RIGHT COLUMN ================= -->
+    <div style="min-width:0; display:flex; flex-direction:column; gap:12px;">
+
+      <!-- ===== DAMAGE BONUS ===== -->
+      <section class="mcde-damage-bonus">
+
+        <h3 style="margin:0 0 6px 0; display:flex; align-items:center; justify-content:space-between; gap:10px;">
+  <span>Damage Bonus</span>
+
+  <button type="button"
+          class="mcde-set-damage-bonus mcde-btn mcde-btn--rivets mcde-btn--compact"
+          title="Recalculate Damage Bonus from attributes">
+    Set Damage Bonus
+  </button>
+</h3>
+
+        <div class="mcde-damage-row">
+          <label>Ranged Damage Bonus</label>
+          <div class="mcde-damage-input">
+            <input type="number"
+                   name="system.damage_bonus.ranged.value"
+                   value="{{system.damage_bonus.ranged.value}}"
+                   min="0"
+                   style="width:60px;">
+            <span class="mcde-dsd-icon">
+  <img src="systems/mutant-chronicles-diesel-edition/assets/sheet/dsd.png">
+</span>
+
+          </div>
+        </div>
+
+        <div class="mcde-damage-row">
+          <label>Melee Damage Bonus</label>
+          <div class="mcde-damage-input">
+            <input type="number"
+                   name="system.damage_bonus.melee.value"
+                   value="{{system.damage_bonus.melee.value}}"
+                   min="0"
+                   style="width:60px;">
+<span class="mcde-dsd-icon">
+  <img src="systems/mutant-chronicles-diesel-edition/assets/sheet/dsd.png">
+</span>
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- ===== WEAPONS ===== -->
+      <section>
+
+        <h3 style="display:flex; align-items:center; justify-content:space-between;">
+          <span>Weapons</span>
+          <a class="mcde-weapon-add" title="Add weapon">+</a>
+        </h3>
+
+        <ul class="items-list mcde-items mcde-hover-controls" style="list-style:none; padding-left:0; margin:0;">
+          {{#each weaponsSorted as |item|}}
+
+        <li class="item mcde-weapon mcde-hover-controls"
+    data-item-id="{{item._id}}"
+    draggable="true"
+    style="margin-bottom:6px; position:relative;">
+
+  <div class="mcde-weapon-row">
+    {{!-- Mini visuel “bandeau” : ne change pas la hauteur du bloc --}}
+    {{#if item.img}}
+      <img class="mcde-weapon-thumb" src="{{item.img}}" alt="{{item.name}}">
+    {{/if}}
+
+    <div class="mcde-weapon-main">
+
+        <div class="item-name" style="display:flex; align-items:center; gap:8px; width:100%;">
+        <h4 style="margin:0; flex:1 1 auto; min-width:0;">
+          <strong>
+            <a class="mcde-roll mcde-ts-title" data-roll="weapon" data-item-id="{{item._id}}">{{item.name}}</a>
+            <span style="opacity:0.75; font-weight:normal;">
+              ({{#if (or (eq item.system.weaponType "melee") (eq item.system.weaponType "unarmed"))}}
+  Melee
+{{else}}
+  Ranged
+{{/if}})
+            </span>
+          </strong>
+        </h4>
+
+        {{!-- RELOADS (ranged only) --}}
+{{#if (eq item.system.weaponType "ranged")}}
+  <div class="mcde-reload-bandolier"
+       data-item-id="{{item._id}}"
+       data-current="{{item.system.reload.current}}"
+       data-max="{{item.system.reload.max}}">
+    {{#each (range 1 10) as |i|}}
+      <img class="mcde-reload-bullet {{#if (lte i item.system.reload.current)}}filled{{else}}empty{{/if}}"
+           data-value="{{i}}"
+           src="systems/mutant-chronicles-diesel-edition/assets/sheet/{{#if (lte i item.system.reload.current)}}reloadfull.png{{else}}reloadempty.png{{/if}}">
+    {{/each}}
+  </div>
+{{/if}}
+      </div>
+
+      <div class="item-detail" style="opacity:0.9;">
+        {{#if (eq item.system.weaponType "ranged")}}
+          Range: <strong>{{item.system.stats.range}}</strong> |
+          Mode: <strong>{{item.system.stats.mode}}</strong> |
+        {{/if}}
+        Damage: <strong>{{item.system.damage.base}}</strong> + <strong>{{{dsValue item.system.damage.dsy}}}</strong>
+      </div>
+
+      {{#if item.system.qualities.length}}
+        <div class="item-detail" style="display:flex; flex-wrap:wrap; gap:4px;">
+          {{#each item.system.qualities as |q|}}
+            <span class="mcde-tag" data-tooltip="{{q.description}}"
+                  style="padding:2px 6px; border:1px solid rgba(0,90,60,0.5); border-radius:10px; font-size:11px;">
+              {{q.name}}
+            </span>
+          {{/each}}
+        </div>
+      {{/if}}
+
+    </div>
+  </div>
+
+  <div class="item-controls">
+    <a class="item-control mcde-weapon-edit" title="Edit"><i class="fas fa-edit"></i></a>
+    <a class="item-control mcde-weapon-delete" title="Delete"><i class="fas fa-trash"></i></a>
+  </div>
+</li>
+
+
+            {{/each}}
+        </ul>
+
+      </section>
+
+<!-- ===== ARMOR ===== -->
+<section class="mcde-armor-dropzone" style="border:none; padding:0; margin:0;">
+  <h3 style="display:flex; align-items:center; justify-content:space-between;">
+    <span>Armor</span>
+    <a class="mcde-armor-add" title="Add armor" style="flex:0 0 auto;">+</a>
+  </h3>
+
+  <div class="mcde-armor-soakbar">
+    <div class="mcde-armor-soak-row">
+      <div class="mcde-armor-soak-cell">
+        <div class="mcde-armor-soak-label">Head</div>
+        <div class="mcde-armor-soak-value">{{autoSoak.head}}</div>
+      </div>
+      <div class="mcde-armor-soak-cell">
+        <div class="mcde-armor-soak-label">Torso</div>
+        <div class="mcde-armor-soak-value">{{autoSoak.torso}}</div>
+      </div>
+      <div class="mcde-armor-soak-cell">
+        <div class="mcde-armor-soak-label">L Arm</div>
+        <div class="mcde-armor-soak-value">{{autoSoak.left_arm}}</div>
+      </div>
+      <div class="mcde-armor-soak-cell">
+        <div class="mcde-armor-soak-label">R Arm</div>
+        <div class="mcde-armor-soak-value">{{autoSoak.right_arm}}</div>
+      </div>
+      <div class="mcde-armor-soak-cell">
+        <div class="mcde-armor-soak-label">Legs</div>
+        <div class="mcde-armor-soak-value">{{autoSoak.legs}}</div>
+      </div>
+    </div>
+
+    <button type="button" class="mcde-armor-setsoaks mcde-btn mcde-btn--rivets mcde-btn--compact">Set Soaks</button>
+  </div>
+
+
+  <ul class="items-list mcde-armors mcde-hover-controls" style="list-style:none; padding-left:0; margin:8px 0 0;">
+    {{#each armorsSorted as |item|}}
+        <li class="item mcde-armor" data-item-id="{{item._id}}" draggable="true" style="margin-bottom:6px;">
+  <div class="item-name" style="display:flex; align-items:center; gap:8px;">
+    <h4 style="margin:0; flex:1; min-width:0;">
+      <strong>{{item.name}}</strong>
+    </h4>
+  </div>
+
+  <div class="item-detail" style="opacity:0.9; font-size:12px;">
+    {{#if (gt item.system.soak.head 0)}}Head: <strong>{{item.system.soak.head}}</strong> | {{/if}}
+    {{#if (gt item.system.soak.torso 0)}}Torso: <strong>{{item.system.soak.torso}}</strong> | {{/if}}
+    {{#if (gt item.system.soak.left_arm 0)}}L Arm: <strong>{{item.system.soak.left_arm}}</strong> | {{/if}}
+    {{#if (gt item.system.soak.right_arm 0)}}R Arm: <strong>{{item.system.soak.right_arm}}</strong> | {{/if}}
+    {{#if (gt item.system.soak.legs 0)}}Legs: <strong>{{item.system.soak.legs}}</strong>{{/if}}
+  </div>
+
+  <div class="item-controls">
+    <a class="item-control mcde-armor-edit" title="Edit"><i class="fas fa-edit"></i></a>
+    <a class="item-control mcde-armor-delete" title="Delete"><i class="fas fa-trash"></i></a>
+  </div>
+</li>
+
+      {{/each}}
+  </ul>
+</section>
+
+      <!-- ===== NOTES / REMINDERS ===== -->
+      <section>
+        <h3 style="margin-bottom:6px;">Combat Notes</h3>
+
+              {{#if editable}}
+                <prose-mirror name="system.combatNotes" button="true" toggled="true" editable="{{editable}}" value="{{system.combatNotes}}">{{{enriched.combatNotes}}}</prose-mirror>
+              {{else}}
+                <div class="editor"><div class="editor-content ProseMirror">{{{enriched.combatNotes}}}</div></div>
+              {{/if}}
+      </section>
+
+    </div> <!-- / RIGHT COLUMN (combat) -->
+
+  </div> <!-- / combat 2-col grid -->
+
+</div> <!-- / tab combat -->
+
+<div class="tab" data-group="primary" data-tab="talents">
+
+  <div class="mcde-talents-belongings-grid">
+
+    <!-- ================= LEFT (2/3): TALENTS ================= -->
+    <section class="mcde-tcol mcde-tcol-talents">
+
+      <h3 style="display:flex; align-items:center; justify-content:space-between; margin:0 0 8px 0;">
+        <span>Talents</span>
+        <a class="mcde-ts-add" data-type="talent" title="Add talent">+</a>
+      </h3>
+
+      <ul class="mcde-ts-list">
+        {{#each talentsSorted as |item|}}
+
+            <li class="mcde-ts-item open"
+                data-item-id="{{item._id}}"
+                draggable="true">
+
+              <div class="mcde-ts-header">
+
+                <div style="display:flex; flex-direction:column; gap:2px; min-width:0;">
+                  <strong class="mcde-ts-title">{{item.name}}</strong>
+
+                  <div class="mcde-ts-meta" style="opacity:0.85; font-size:12px; line-height:1.1;">
+                    {{#if item.system.tier}}
+                      Tier: <strong>{{item.system.tier}}</strong>
+                    {{/if}}
+                    {{#if item.system.category}}
+                      {{#if item.system.tier}} | {{/if}}
+                      Tree: <strong>{{item.system.category}}</strong>
+                    {{/if}}
+                    {{#if item.system.prerequisite}}
+                      {{#if (or item.system.tier item.system.category)}} | {{/if}}
+                      Prereq: <strong>{{item.system.prerequisite}}</strong>
+                    {{/if}}
+                  </div>
+                </div>
+
+                <div class="mcde-ts-actions">
+                  <div class="item-controls">
+                    <a class="item-control mcde-ts-edit" title="Edit"><i class="fas fa-edit"></i></a>
+                    <a class="item-control mcde-ts-delete" title="Delete"><i class="fas fa-trash"></i></a>
+                  </div>
+                  <span class="mcde-ts-toggle">▾</span>
+                </div>
+
+              </div>
+
+              <div class="mcde-ts-body">
+                {{{dsify item.system.description}}}
+              </div>
+
+            </li>
+
+        {{/each}}
+      </ul>
+
+    </section>
+
+    <!-- ================= RIGHT (1/3): BELONGINGS ================= -->
+    <aside class="mcde-tcol mcde-tcol-belongings">
+
+      <h3 class="mcde-section-title">
+  <span>Belongings</span>
+</h3>
+
+      <!-- ===== INFLUENCE (bonus like Damage Bonus) ===== -->
+      <section class="mcde-damage-bonus mcde-influence-box">
+
+        <h3 style="margin:0 0 6px 0; display:flex; align-items:center; justify-content:space-between; gap:10px;">
+  <span>Influence</span>
+  <button type="button"
+          class="mcde-set-influence mcde-btn mcde-btn--rivets mcde-btn--compact"
+          title="Recalculate Influence from Personality">
+    Set Influence
+  </button>
+</h3>
+
+        <div class="mcde-damage-row" style="margin:0;">
+          <label style="opacity:0.9;">Bonus</label>
+          <div class="mcde-damage-input">
+            <input type="number"
+                   name="system.belongings.influence"
+                   value="{{system.belongings.influence}}"
+                   min="0"
+                   style="width:60px;">
+            <span class="mcde-dsd-icon">
+              <img src="systems/mutant-chronicles-diesel-edition/assets/sheet/dsd.png">
+            </span>
+          </div>
+        </div>
+
+        <div style="opacity:0.75; font-size:12px; margin-top:6px; line-height:1.25;">
+          Used as bonus Dark Symmetry dice when acquiring items.
+        </div>
+
+      </section>
+
+<!-- ===== ECONOMY (Earnings / Assets / Maintenance) ===== -->
+<section class="mcde-econ-box">
+
+  <h4 class="mcde-econ-title">Assets</h4>
+
+  <div class="mcde-econ-row">
+    <label>Earnings</label>
+    <input type="number"
+           name="system.belongings.earnings"
+           value="{{system.belongings.earnings}}"
+           min="0" max="999" step="1"
+           class="mcde-econ-input">
+  </div>
+
+  <div class="mcde-econ-row">
+    <label>Assets</label>
+    <input type="number"
+           name="system.belongings.assets"
+           value="{{system.belongings.assets}}"
+           min="0" max="999" step="1"
+           class="mcde-econ-input">
+  </div>
+
+  <div class="mcde-econ-row">
+    <label>Maintenance</label>
+    <input type="number"
+           name="system.belongings.maintenance"
+           value="{{system.belongings.maintenance}}"
+           min="0" max="999" step="1"
+           class="mcde-econ-input">
+  </div>
+
+  <div class="mcde-econ-hint">
+    To buy an object, you have make an Acquisition Roll, then a Cash Roll (Use Influence Bonus).
+  </div>
+
+</section>
+
+      <!-- ===== LODGINGS ===== -->
+      <section class="mcde-belongings-field">
+        <div class="flexrow" style="gap:8px; align-items:center;">
+          <label style="flex:0 0 auto;">Lodgings</label>
+          <input type="text"
+                 name="system.belongings.lodgings"
+                 value="{{system.belongings.lodgings}}"
+                 placeholder="e.g., Barracks, Cheap hotel..."
+                 style="flex:1; min-width:0;">
+        </div>
+      </section>
+
+      <!-- ===== ITEMS & BELONGINGS (drag & drop) ===== -->
+      <section class="mcde-belongings-items">
+
+        <h3 class="mcde-section-title mcde-items-title">
+  <span>Items</span>
+  <a class="mcde-ts-add" data-type="equipment" title="Add equipment">+</a>
+</h3>
+
+        <ul class="mcde-ts-list mcde-ts-drop">
+          {{#each equipmentSorted as |item|}}
+
+              <li class="mcde-ts-item"
+                  data-item-id="{{item._id}}"
+                  draggable="true">
+
+                <div class="mcde-ts-header">
+                  <strong class="mcde-ts-title">{{item.name}}</strong>
+
+                  <div class="mcde-ts-actions">
+                    <div class="item-controls">
+                      <a class="item-control mcde-ts-edit" title="Edit"><i class="fas fa-edit"></i></a>
+                      <a class="item-control mcde-ts-delete" title="Delete"><i class="fas fa-trash"></i></a>
+                    </div>
+                    <span class="mcde-ts-toggle">▾</span>
+                  </div>
+                </div>
+
+                <div class="mcde-ts-body">
+                  {{{dsify item.system.description}}}
+                </div>
+
+              </li>
+
+          {{/each}}
+        </ul>
+
+      </section>
+
+    </aside>
+
+  </div>
+
+</div>
+
+<div class="tab" data-group="primary" data-tab="spells">
+
+  <section>
+    <h3 style="display:flex; align-items:center; justify-content:space-between;">
+      <span>Spells</span>
+      <a class="mcde-ts-add" data-type="spell" title="Add spell">+</a>
+    </h3>
+
+    <ul class="mcde-ts-list">
+      {{#each spellsSorted as |item|}}
+
+          <li class="mcde-ts-item open"
+              data-item-id="{{item._id}}"
+              draggable="true">
+
+            <div class="mcde-ts-header">
+
+              <strong class="mcde-ts-title">{{item.name}}</strong>
+
+              <div class="mcde-ts-actions">
+                <div class="item-controls">
+                  <a class="item-control mcde-ts-edit" title="Edit"><i class="fas fa-edit"></i></a>
+                  <a class="item-control mcde-ts-delete" title="Delete"><i class="fas fa-trash"></i></a>
+                </div>
+                <span class="mcde-ts-toggle">▾</span>
+              </div>
+
+            </div>
+
+            <div class="mcde-ts-body">
+              <div class="mcde-ts-sub">
+                <em>Base Effect</em>
+                {{{dsify item.system.baseEffect}}}
+              </div>
+
+              <div class="mcde-ts-sub">
+                <em>Momentum Spends</em>
+                {{{dsify item.system.momentum}}}
+              </div>
+            </div>
+
+          </li>
+
+      {{/each}}
+    </ul>
+
+  </section>
+
+    </div> <!-- / tab spells -->
+
+<div class="tab" data-group="primary" data-tab="notes">
+
+  <section style="display:flex; flex-direction:column; gap:16px;">
+
+    <!-- NOTES -->
+    <div>
+      <h3 style="margin-bottom:6px;">Notes</h3>
+
+      {{#if editable}}
+        <prose-mirror name="system.notes" button="true" toggled="true" editable="{{editable}}" value="{{system.notes}}">{{{enriched.notes}}}</prose-mirror>
+      {{else}}
+        <div class="editor"><div class="editor-content ProseMirror">{{{enriched.notes}}}</div></div>
+      {{/if}}
+    </div>
+
+    <!-- BACKGROUND -->
+    <div>
+      <h3 style="margin-bottom:6px;">Background</h3>
+
+      {{#if editable}}
+        <prose-mirror name="system.background" button="true" toggled="true" editable="{{editable}}" value="{{system.background}}">{{{enriched.background}}}</prose-mirror>
+      {{else}}
+        <div class="editor"><div class="editor-content ProseMirror">{{{enriched.background}}}</div></div>
+      {{/if}}
+    </div>
+
+  </section>
+
+</div>
+
+  </section>
+
+</div>

@@ -1,0 +1,147 @@
+<div class="flexcol">
+
+  <header class="sheet-header mcde-weapon-header">
+  <div class="mcde-weapon-hero">
+    <img class="mcde-weapon-hero-img" src="{{item.img}}" data-action="editImage" data-field="img" />
+  </div>
+
+  <div class="mcde-weapon-headtext">
+    <h1 class="mcde-nameplate mcde-weapon-title">
+      <input name="name" type="text" value="{{item.name}}" placeholder="Weapon Name"/>
+    </h1>
+    <div class="mcde-weapon-sub">Weapon</div>
+  </div>
+</header>
+
+<section class="sheet-body flexcol">
+
+  <!-- WRAPPER 2 colonnes -->
+  <div class="flexrow mcde-weapon-topcols" style="gap:12px; margin-top:8px;">
+
+    <!-- COLONNE 1 : Economy -->
+    <div class="flexcol mcde-weapon-economy">
+      <h3>Economy</h3>
+
+      <div class="mcde-weapon-economy-grid">
+        <div class="flexrow" style="gap:8px; align-items:center;">
+          <label>Restriction</label>
+          <input type="number" name="system.restriction" value="{{system.restriction}}">
+        </div>
+
+        <div class="flexrow" style="gap:8px; align-items:center;">
+          <label>Cost</label>
+          <input type="number" name="system.cost" value="{{system.cost}}">
+        </div>
+
+        <div class="flexrow" style="gap:8px; align-items:center;">
+          <label>Reliability</label>
+          <input type="number" name="system.stats.reliability" value="{{system.stats.reliability}}">
+        </div>
+
+        <div class="flexrow" style="gap:8px; align-items:center;">
+          <label>Encumbrance</label>
+          <input type="number" name="system.stats.enc" value="{{system.stats.enc}}">
+        </div>
+      </div>
+    </div>
+
+    <!-- COLONNE 2 : Stats -->
+    <div class="flexcol mcde-weapon-stats">
+      <h3>Stats</h3>
+
+      <div class="flexrow" style="gap:8px; align-items:center;">
+        <label style="flex:1;">Weapon Type</label>
+        <select name="system.weaponType" style="width:100%;">
+           <option value="melee"   {{#if (eq system.weaponType "melee")}}selected{{/if}}>Melee</option>
+           <option value="unarmed" {{#if (eq system.weaponType "unarmed")}}selected{{/if}}>Unarmed</option>
+           <option value="ranged"  {{#if (eq system.weaponType "ranged")}}selected{{/if}}>Ranged</option>
+           <option value="heavy"   {{#if (eq system.weaponType "heavy")}}selected{{/if}}>Heavy</option>
+           <option value="mounted" {{#if (eq system.weaponType "mounted")}}selected{{/if}}>Mounted</option>
+        </select>
+      </div>
+
+      {{#if (or (eq system.weaponType "ranged") (eq system.weaponType "heavy") (eq system.weaponType "mounted"))}}
+      <div class="flexrow" style="gap:8px; align-items:center;">
+        <label style="flex:1;">Range</label>
+        <select name="system.stats.range" style="width:100%;">
+          <option value="Reach"   {{#if (eq system.stats.range "Reach")}}selected{{/if}}>Reach</option>
+          <option value="Close"   {{#if (eq system.stats.range "Close")}}selected{{/if}}>Close</option>
+          <option value="Medium"  {{#if (eq system.stats.range "Medium")}}selected{{/if}}>Medium</option>
+          <option value="Long"    {{#if (eq system.stats.range "Long")}}selected{{/if}}>Long</option>
+          <option value="Extreme" {{#if (eq system.stats.range "Extreme")}}selected{{/if}}>Extreme</option>
+        </select>
+      </div>
+
+      <div class="flexrow" style="gap:8px; align-items:center;">
+        <label style="flex:1;">Firing Mode</label>
+        <select name="system.stats.mode" style="width:100%;">
+          <option value="Munition"        {{#if (eq system.stats.mode "Munition")}}selected{{/if}}>Munition</option>
+          <option value="Semi-Automatic"  {{#if (eq system.stats.mode "Semi-Automatic")}}selected{{/if}}>Semi-Automatic</option>
+          <option value="Burst"           {{#if (eq system.stats.mode "Burst")}}selected{{/if}}>Burst</option>
+          <option value="Automatic"       {{#if (eq system.stats.mode "Automatic")}}selected{{/if}}>Automatic</option>
+        </select>
+      </div>
+      {{/if}}
+
+      <div class="flexrow" style="gap:8px; align-items:center;">
+        <label style="flex:1;">Size</label>
+        <select name="system.stats.size" style="width:100%;">
+          <option value="One-Handed" {{#if (eq system.stats.size "One-Handed")}}selected{{/if}}>One-Handed</option>
+          <option value="Two-Handed" {{#if (eq system.stats.size "Two-Handed")}}selected{{/if}}>Two-Handed</option>
+          <option value="Unbalanced" {{#if (eq system.stats.size "Unbalanced")}}selected{{/if}}>Unbalanced</option>
+          <option value="Unwieldy"   {{#if (eq system.stats.size "Unwieldy")}}selected{{/if}}>Unwieldy</option>
+        </select>
+      </div>
+
+    </div>
+  </div>
+
+    <h3 style="margin-top:12px;">Damage</h3>
+    <div class="flexrow" style="gap:12px; align-items:center;">
+      <label style="display:flex; gap:6px; align-items:center;">
+        <span>Base</span>
+        <input type="number" name="system.damage.base" value="{{system.damage.base}}" style="width:90px;">
+      </label>
+      <label style="display:flex; gap:6px; align-items:center;">
+        <span>{{{dsify "DSD"}}}</span>
+        <input type="number" name="system.damage.dsy" value="{{system.damage.dsy}}" style="width:90px;">
+      </label>
+      <label style="display:flex; gap:6px; align-items:center;">
+        <span>Flat Bonus</span>
+        <input type="number" name="system.damage.flatBonus" value="{{system.damage.flatBonus}}" style="width:110px;">
+      </label>
+    </div>
+
+    <h3 style="margin-top:12px; display:flex; justify-content:space-between; align-items:center;">
+      <span>Weapon Qualities</span>
+      <small style="opacity:0.8;">Drop a Quality item here</small>
+    </h3>
+
+<div class="mcde-quality-dropzone">
+  {{#if system.qualities.length}}
+    <div class="mcde-quality-tags">
+      {{#each system.qualities as |q i|}}
+        <span class="mcde-quality-tag" data-tooltip="{{q.description}}">
+          {{q.name}}
+          <a class="mcde-quality-remove" data-index="{{i}}" title="Remove">
+            <i class="fas fa-times"></i>
+          </a>
+        </span>
+      {{/each}}
+    </div>
+  {{else}}
+    <div class="mcde-quality-empty">No qualities yet.</div>
+  {{/if}}
+</div>
+
+<h3 style="margin-top:12px;">Description</h3>
+<div style="min-height:220px;">
+  {{#if editable}}
+    <prose-mirror name="system.description" button="true" toggled="true" editable="{{editable}}" value="{{system.description}}">{{{enriched.description}}}</prose-mirror>
+  {{else}}
+    <div class="editor"><div class="editor-content ProseMirror">{{{enriched.description}}}</div></div>
+  {{/if}}
+</div>
+
+  </section>
+</div>

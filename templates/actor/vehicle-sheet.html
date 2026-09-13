@@ -1,0 +1,753 @@
+<div class="flexcol">
+
+  <style>
+    /* ================================
+       VEHICLE SHEET – Scoped CSS fixes
+       ================================ */
+
+    /* 1) Tabs: keep them compact and centered */
+    .mcde-vehicle-root .mcde-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      width: 100%;
+      margin: 0 0 14px 0;
+      padding: 0;
+    }
+
+    /* Foundry often gives .tabs .item { flex: 1 } -> override it */
+    .mcde-vehicle-root .mcde-tabs a,
+    .mcde-vehicle-root .mcde-tabs .item {
+      flex: 0 0 auto;
+    }
+
+    /* 2) Content area: avoid overflow outside the sheet */
+    .mcde-vehicle-root .mcde-tab-content {
+      position: relative;
+      width: 100%;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    /* 3) Locations: force them into a grid (inside the sheet) */
+    .mcde-vehicle-root .mcde-location-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      width: 100%;
+      overflow: hidden;
+      align-items: start;
+    }
+
+    /* Each location card: prevent any absolute/fixed rules from leaking */
+    .mcde-vehicle-root .mcde-loc,
+    .mcde-vehicle-root .mcde-loc-card {
+      position: static !important;
+      min-width: 0;
+    }
+
+    /* Track rows: clean inline layout */
+    .mcde-vehicle-root .mcde-loc-track {
+      position: static !important;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .mcde-vehicle-root .mcde-trackboxes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      align-items: center;
+    }
+
+    /* Boxes */
+    .mcde-vehicle-root .mcde-box {
+      width: 14px;
+      height: 14px;
+      display: inline-block;
+      box-sizing: border-box;
+      border: 1px solid rgba(0, 0, 0, 0.35);
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.18);
+      cursor: pointer;
+    }
+
+    .mcde-vehicle-root .mcde-box.filled {
+      background: rgba(160, 0, 0, 0.75);
+    }
+
+    /* Vehicle Tags: avoid Foundry flexrow rule */
+    .mcde.sheet.actor.vehicle .mcde-tagrow > *{
+      flex: 0 0 auto;
+    }
+
+    /* Neutral crew drop styling shared by Pilot & Gunner */
+    .mcde.sheet.actor.vehicle .mcde-crew-drop{
+      border: 1px dashed rgba(0,0,0,0.25);
+      border-radius: 8px;
+      padding: 6px 10px;
+      min-height: 34px;
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+      width: 100%;
+    }
+  </style>
+
+  <div class="mcde-vehicle-root">
+
+    <header class="mcde-vehicle-header">
+      <!-- Full-width hero image -->
+      <div class="mcde-vehicle-hero">
+        <img class="profile-img mcde-vehicle-hero-img"
+             src="{{actor.img}}"
+             data-action="editImage"
+             data-field="img"
+             alt="{{actor.name}}" />
+      </div>
+
+      <!-- Name + meta -->
+      <div class="mcde-vehicle-headtext">
+        <h1 class="mcde-nameplate mcde-vehicle-title">
+          <input name="name" type="text" value="{{actor.name}}" placeholder="Vehicle Name" />
+        </h1>
+
+        <div class="mcde-vehicle-meta">
+          <input class="mcde-vehicle-faction"
+                 name="system.description"
+                 type="text"
+                 value="{{system.description}}"
+                 placeholder="(Faction / Model info)" />
+          <span class="mcde-vehicle-meta-label">Faction</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- TABS (Logistics + Armaments removed) -->
+    <nav class="mcde-tabs tabs" data-group="primary">
+      <a class="item" data-tab="tactical">Tactical</a>
+      <a class="item" data-tab="notes">Notes</a>
+    </nav>
+
+    <section class="mcde-tab-content">
+
+      <!-- TACTICAL -->
+      <div class="tab" data-group="primary" data-tab="tactical">
+
+        <div class="flexrow" style="gap:12px;">
+
+          <!-- LEFT COLUMN -->
+          <div class="flexcol" style="flex:1.5; min-width:0;">
+            <h3>Mobility</h3>
+
+            <div class="mcde-formgrid mcde-mobility-grid">
+              <div class="mcde-fg-label">Cruising Speed (kph)</div>
+              <div class="mcde-fg-field">
+                <input name="system.cruisingspeed" type="text" value="{{system.cruisingspeed}}" placeholder="130 kph" />
+              </div>
+              <div class="mcde-fg-action" rowspan="2">
+                <button type="button" class="mcde-btn-pilot mcde-btn-dashboard" data-action="pilot-test">PILOT</button>
+              </div>
+
+              <div class="mcde-fg-label">Manoeuvrability</div>
+              <div class="mcde-fg-field">
+                <input name="system.combatmanoeuvrability" type="number" value="{{system.combatmanoeuvrability}}" min="0" />
+              </div>
+            </div>
+
+            <h3 style="margin-top:10px;">Impact Damage</h3>
+
+            <div class="mcde-impact-rowline">
+              <div class="mcde-impact-label">Base</div>
+              <input class="mcde-impact-input"
+                     name="system.impactdamage.base"
+                     type="number"
+                     value="{{system.impactdamage.base}}"
+                     min="0" />
+
+              <img class="mcde-dsd-icon"
+                   src="systems/mutant-chronicles-diesel-edition/assets/sheet/dsd.png"
+                   alt="DSD" />
+
+              <input class="mcde-impact-input"
+                     name="system.impactdamage.dsy"
+                     type="number"
+                     value="{{system.impactdamage.dsy}}"
+                     min="0" />
+
+              <div class="mcde-impact-action">
+                <button type="button"
+                        data-action="roll-impact-damage"
+                        class="mcde-btn-impact mcde-btn-dashboard">
+                  <span class="mcde-btn-impact-text">IMPACT</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT COLUMN (Crew + Fuel Loads MUST stay here) -->
+          <div class="flexcol" style="flex:1; min-width:0;">
+            <h3>Crew</h3>
+
+            <!-- Pilot drop zone -->
+            <div class="mcde-pilot-drop mcde-crew-drop" data-drop="pilot">
+              <div class="mcde-pilot-chip mcde-crew-chip">
+                <div class="mcde-pilot-title">Pilot</div>
+
+                {{#if system.crew.pilotUuid}}
+                  <img class="mcde-pilot-img mcde-crew-avatar" src="{{crewPilot.img}}" alt="{{crewPilot.name}}">
+                  <div class="mcde-pilot-name">{{crewPilot.name}}</div>
+
+                  <a class="mcde-pilot-clear mcde-crew-clear" data-action="clear-pilot" title="Clear Pilot">
+                    <i class="fas fa-times"></i>
+                  </a>
+                {{else}}
+                  <div class="mcde-pilot-hint mcde-crew-empty">Drop an Actor here</div>
+                {{/if}}
+              </div>
+            </div>
+
+            <!-- Passengers + Encumbrance side-by-side -->
+            <div class="mcde-crew-stats">
+              <div class="form-group">
+                <label>Passengers</label>
+                <input name="system.crew.passengers" type="number" value="{{system.crew.passengers}}" min="0" />
+              </div>
+
+              <div class="form-group">
+                <label>Encumbrance</label>
+                <input name="system.crew.encumbrance" type="number" value="{{system.crew.encumbrance}}" min="0" />
+              </div>
+            </div>
+
+            <h3 style="margin-top:10px;">Fuel Loads</h3>
+
+            <div class="mcde-fuel-block mcde-fuel-wide">
+              <div class="mcde-fuel-head">
+                <label class="mcde-fuel-label">Fuel</label>
+                <input class="mcde-fuel-max"
+                       name="system.fuel.max"
+                       type="number"
+                       value="{{system.fuel.max}}"
+                       min="0" />
+              </div>
+
+              {{#if (gt system.fuel.max 0)}}
+                <div class="mcde-fuel-gauge">
+                  {{#each (range 1 system.fuel.max) as |i|}}
+                    <span class="mcde-fuel-box {{#if (lte i ../system.fuel.cur)}}filled{{/if}}"
+                          data-idx="{{i}}"></span>
+                  {{/each}}
+                </div>
+              {{/if}}
+            </div>
+          </div>
+
+        </div>
+
+        <hr />
+
+        <!-- Vehicle Tags -->
+        <section class="mcde-block mcde-vehicle-tags" style="width:100%;">
+  <header class="mcde-block-header flexrow" style="align-items:center; justify-content:space-between;">
+    <h3 style="margin:0;">Vehicle Tags</h3>
+    <div class="hint" style="opacity:.7; font-size:12px;">Drop Qualities here</div>
+  </header>
+
+          <div class="mcde-vehicle-tags-dropzone" style="width:100%; min-height:42px;">
+            <div class="mcde-tagrow" style="display:flex; flex-wrap:wrap; gap:6px;">
+              {{#each vehicleTags as |t idx|}}
+                <span class="mcde-tag"
+      data-mcde-tag="{{idx}}"
+      data-mcde-desc="{{t.description}}">
+  {{t.name}}
+  <a data-action="vehicle-tag-remove" data-index="{{idx}}" title="Remove" class="mcde-tag-x">✕</a>
+</span>
+              {{/each}}
+              {{#unless vehicleTags.length}}
+                <span style="opacity:.6;">(empty)</span>
+              {{/unless}}
+            </div>
+          </div>
+        </section>
+
+<!-- Armaments -->
+<section class="mcde-block mcde-veh-armaments">
+
+  <header class="mcde-block-header mcde-armaments-header">
+    <h3>Armaments</h3>
+
+    <a class="item-control"
+       data-action="veh-weapon-create"
+       title="Create Weapon">
+      <i class="fas fa-plus"></i>
+    </a>
+  </header>
+
+  <div class="hint mcde-armaments-hint">
+    Drop Weapons here
+  </div>
+
+  <div class="mcde-veh-armaments-dropzone">
+    <ul class="items-list mcde-items mcde-hover-controls mcde-veh-armaments-list">
+
+      {{#each armaments as |w|}}
+        <li class="item mcde-weapon mcde-hover-controls mcde-veh-weapon"
+            data-item-id="{{w.id}}"
+            draggable="true">
+
+          <div class="mcde-weapon-row">
+            {{#if w.img}}
+              <img class="mcde-weapon-thumb" src="{{w.img}}" alt="{{w.name}}">
+            {{/if}}
+
+            <div class="mcde-weapon-main">
+
+              <div class="item-name mcde-veh-weapon-titleline">
+                <h4>
+                  <strong>
+                    <a class="mcde-roll"
+                       data-action="veh-weapon-attack"
+                       data-item-id="{{w.id}}">
+                      {{w.name}}
+                    </a>
+                    <span class="mcde-weapon-type">
+                      ({{#if (eq w.system.weaponType "melee")}}Melee{{else}}Ranged{{/if}})
+                    </span>
+                  </strong>
+                </h4>
+
+                {{#if (or (eq w.system.weaponType "ranged") (eq w.system.weaponType "heavy") (eq w.system.weaponType "mounted"))}}
+                  <div class="mcde-reload-bandolier"
+                       data-item-id="{{w.id}}"
+                       data-current="{{w.system.reload.current}}"
+                       data-max="{{w.system.reload.max}}">
+                    {{#each (range 1 10) as |i|}}
+                      <img class="mcde-reload-bullet {{#if (lte i w.system.reload.current)}}filled{{else}}empty{{/if}}"
+                           data-value="{{i}}"
+                           src="systems/mutant-chronicles-diesel-edition/assets/sheet/{{#if (lte i w.system.reload.current)}}reloadfull.png{{else}}reloadempty.png{{/if}}">
+                    {{/each}}
+                  </div>
+                {{/if}}
+              </div>
+
+              <div class="item-detail mcde-veh-weapon-meta">
+                {{#if (or (eq w.system.weaponType "ranged") (eq w.system.weaponType "heavy") (eq w.system.weaponType "mounted"))}}
+                  Range: <strong>{{w.system.stats.range}}</strong> |
+                  Mode: <strong>{{w.system.stats.mode}}</strong> |
+                {{/if}}
+                Damage: <strong>{{w.system.damage.base}}</strong> + <strong>{{{dsValue w.system.damage.dsy}}}</strong>
+              </div>
+
+              {{#if w.system.qualities.length}}
+                <div class="item-detail mcde-veh-weapon-tags">
+                  {{#each w.system.qualities as |q|}}
+                    <span class="mcde-tag" data-tooltip="{{q.description}}">
+                      {{q.name}}
+                    </span>
+                  {{/each}}
+                </div>
+              {{/if}}
+
+            </div>
+          </div>
+
+          <div class="mcde-veh-crewcol">
+            <div class="mcde-gunner-ui">
+              <div class="mcde-gunner-drop mcde-crew-drop"
+                   data-drop="gunner"
+                   data-weapon-id="{{w.id}}">
+                <div class="mcde-crew-chip">
+                  <div class="mcde-pilot-title">GUNNER</div>
+
+                  {{#if w.gunner}}
+                    <img class="mcde-crew-avatar" src="{{w.gunner.img}}" alt="{{w.gunner.name}}">
+                    <div class="mcde-crew-name">{{w.gunner.name}}</div>
+                    <a class="mcde-crew-clear"
+                       data-action="veh-gunner-clear"
+                       data-item-id="{{w.id}}"
+                       title="Clear gunner">
+                      <i class="fas fa-times"></i>
+                    </a>
+                  {{else}}
+                    <div class="mcde-crew-empty">Drop</div>
+                  {{/if}}
+                </div>
+              </div>
+            </div>
+
+            <div class="item-controls">
+              <a class="item-control item-edit" data-action="veh-weapon-edit" data-item-id="{{w.id}}" title="Edit">
+                <i class="fas fa-edit"></i>
+              </a>
+              <a class="item-control item-delete" data-action="veh-weapon-delete" data-item-id="{{w.id}}" title="Delete">
+                <i class="fas fa-trash"></i>
+              </a>
+            </div>
+          </div>
+
+        </li>
+      {{/each}}
+
+      {{#unless armaments.length}}
+        <li class="mcde-armaments-empty">(empty)</li>
+      {{/unless}}
+
+    </ul>
+  </div>
+</section>
+        <h3>Damage by Location</h3>
+
+{{!-- TOP ROW : WEAPONS --}}
+<div class="mcde-vehweapons-top">
+
+  <div class="mcde-vehweapons-line">
+
+    <!-- WEAPONS + SOAK -->
+    <div class="mcde-vehweapons-head">
+  <div class="mcde-loc-title">Weapons</div>
+</div>
+
+<div class="mcde-vehweapons-soak">
+  <div class="mcde-soak-label">Soak</div>
+  <input class="mcde-soak-input"
+         name="system.locations.weapons.soak"
+         type="number"
+         value="{{locations.weapons.soak}}"
+         min="0" />
+</div>
+
+
+    <!-- SURFACE -->
+    <div class="mcde-loc-track mcde-vehweapons-track">
+
+      <div class="mcde-loc-track-row">
+        <div class="mcde-loc-track-label">Surface</div>
+
+        <input class="mcde-loc-max"
+               name="system.locations.weapons.surfaceMax"
+               type="number"
+               value="{{locations.weapons.surfaceMax}}"
+               min="0" />
+      </div>
+
+      {{#if (gt locations.weapons.surfaceMax 0)}}
+      <div class="mcde-stretch-gauge">
+        {{#each (range 1 locations.weapons.surfaceMax) as |i|}}
+          <span class="mcde-stretch-seg {{#if (lte i ../locations.weapons.surfaceCur)}}filled{{/if}}"
+                data-loc="weapons"
+                data-track="surfaceCur"
+                data-idx="{{i}}"></span>
+        {{/each}}
+      </div>
+      {{/if}}
+
+    </div>
+
+
+    <!-- SYSTEM -->
+    <div class="mcde-loc-track mcde-vehweapons-track">
+
+      <div class="mcde-loc-track-row">
+        <div class="mcde-loc-track-label">System</div>
+
+        <input class="mcde-loc-max"
+               name="system.locations.weapons.systemMax"
+               type="number"
+               value="{{locations.weapons.systemMax}}"
+               min="0" />
+      </div>
+
+      {{#if (gt locations.weapons.systemMax 0)}}
+      <div class="mcde-stretch-gauge">
+        {{#each (range 1 locations.weapons.systemMax) as |i|}}
+          <span class="mcde-stretch-seg {{#if (lte i ../locations.weapons.systemCur)}}filled{{/if}}"
+                data-loc="weapons"
+                data-track="systemCur"
+                data-idx="{{i}}"></span>
+        {{/each}}
+      </div>
+      {{/if}}
+
+    </div>
+
+
+    <!-- STRUCTURAL -->
+    <div class="mcde-loc-track mcde-vehweapons-track">
+
+      <div class="mcde-loc-track-row">
+        <div class="mcde-loc-track-label">Structural</div>
+
+        <input class="mcde-loc-max"
+               name="system.locations.weapons.structuralMax"
+               type="number"
+               value="{{locations.weapons.structuralMax}}"
+               min="0" />
+      </div>
+
+      {{#if (gt locations.weapons.structuralMax 0)}}
+      <div class="mcde-stretch-gauge">
+        {{#each (range 1 locations.weapons.structuralMax) as |i|}}
+          <span class="mcde-stretch-seg {{#if (lte i ../locations.weapons.structuralCur)}}filled{{/if}}"
+                data-loc="weapons"
+                data-track="structuralCur"
+                data-idx="{{i}}"></span>
+        {{/each}}
+      </div>
+      {{/if}}
+
+    </div>
+
+  </div>
+
+</div>
+
+{{!-- OLD LAYOUT RESTORED : HULL / DOLL / MOTIVE --}}
+<div class="mcde-location-grid">
+
+  {{!-- HULL --}}
+  <div class="mcde-loc">
+    <div class="mcde-loc-header">
+      <div class="mcde-loc-title">Hull</div>
+
+      <div class="mcde-soak-plate">
+        <div class="mcde-soak-label">Soak</div>
+        <input class="mcde-soak-input"
+               name="system.locations.hull.soak"
+               type="number"
+               value="{{locations.hull.soak}}"
+               min="0" />
+      </div>
+    </div>
+
+    <div class="mcde-loc-tracks">
+
+      <!-- Surface -->
+      <div class="mcde-loc-track">
+        <div class="mcde-loc-track-row">
+          <div class="mcde-loc-track-label">Surface</div>
+          <input class="mcde-loc-max"
+                 name="system.locations.hull.surfaceMax"
+                 type="number"
+                 value="{{locations.hull.surfaceMax}}"
+                 min="0" />
+        </div>
+
+        {{#if (gt locations.hull.surfaceMax 0)}}
+          <div class="mcde-stretch-gauge">
+            {{#each (range 1 locations.hull.surfaceMax) as |i|}}
+              <span class="mcde-stretch-seg {{#if (lte i ../locations.hull.surfaceCur)}}filled{{/if}}"
+                    data-loc="hull"
+                    data-track="surfaceCur"
+                    data-idx="{{i}}"></span>
+            {{/each}}
+          </div>
+        {{/if}}
+
+        <div class="mcde-trackboxes">
+          {{#each (range 1 locations.hull.surfaceMax) as |i|}}
+            <span class="mcde-box {{#if (lte i ../locations.hull.surfaceCur)}}filled{{/if}}"
+                  data-loc="hull" data-track="surfaceCur" data-idx="{{i}}"></span>
+          {{/each}}
+        </div>
+      </div>
+
+      <!-- System -->
+      <div class="mcde-loc-track">
+        <div class="mcde-loc-track-row">
+          <div class="mcde-loc-track-label">System</div>
+          <input class="mcde-loc-max"
+                 name="system.locations.hull.systemMax"
+                 type="number"
+                 value="{{locations.hull.systemMax}}"
+                 min="0" />
+        </div>
+
+        {{#if (gt locations.hull.systemMax 0)}}
+          <div class="mcde-stretch-gauge">
+            {{#each (range 1 locations.hull.systemMax) as |i|}}
+              <span class="mcde-stretch-seg {{#if (lte i ../locations.hull.systemCur)}}filled{{/if}}"
+                    data-loc="hull"
+                    data-track="systemCur"
+                    data-idx="{{i}}"></span>
+            {{/each}}
+          </div>
+        {{/if}}
+
+        <div class="mcde-trackboxes">
+          {{#each (range 1 locations.hull.systemMax) as |i|}}
+            <span class="mcde-box {{#if (lte i ../locations.hull.systemCur)}}filled{{/if}}"
+                  data-loc="hull" data-track="systemCur" data-idx="{{i}}"></span>
+          {{/each}}
+        </div>
+      </div>
+
+      <!-- Structural -->
+      <div class="mcde-loc-track">
+        <div class="mcde-loc-track-row">
+          <div class="mcde-loc-track-label">Structural</div>
+          <input class="mcde-loc-max"
+                 name="system.locations.hull.structuralMax"
+                 type="number"
+                 value="{{locations.hull.structuralMax}}"
+                 min="0" />
+        </div>
+
+        {{#if (gt locations.hull.structuralMax 0)}}
+          <div class="mcde-stretch-gauge">
+            {{#each (range 1 locations.hull.structuralMax) as |i|}}
+              <span class="mcde-stretch-seg {{#if (lte i ../locations.hull.structuralCur)}}filled{{/if}}"
+                    data-loc="hull"
+                    data-track="structuralCur"
+                    data-idx="{{i}}"></span>
+            {{/each}}
+          </div>
+        {{/if}}
+
+        <div class="mcde-trackboxes">
+          {{#each (range 1 locations.hull.structuralMax) as |i|}}
+            <span class="mcde-box {{#if (lte i ../locations.hull.structuralCur)}}filled{{/if}}"
+                  data-loc="hull" data-track="structuralCur" data-idx="{{i}}"></span>
+          {{/each}}
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  {{!-- MIDDLE DOLL --}}
+  <div class="mcde-locadoll-wrap">
+    <img class="mcde-locadoll"
+         src="systems/mutant-chronicles-diesel-edition/assets/sheet/loccardoll.png"
+         alt="Vehicle location doll">
+  </div>
+
+  {{!-- MOTIVE --}}
+  <div class="mcde-loc">
+    <div class="mcde-loc-header">
+      <div class="mcde-loc-title">Motive</div>
+
+      <div class="mcde-soak-plate">
+        <div class="mcde-soak-label">Soak</div>
+        <input class="mcde-soak-input"
+               name="system.locations.motive.soak"
+               type="number"
+               value="{{locations.motive.soak}}"
+               min="0" />
+      </div>
+    </div>
+
+    <div class="mcde-loc-tracks">
+
+      <!-- Surface -->
+      <div class="mcde-loc-track">
+        <div class="mcde-loc-track-row">
+          <div class="mcde-loc-track-label">Surface</div>
+          <input class="mcde-loc-max"
+                 name="system.locations.motive.surfaceMax"
+                 type="number"
+                 value="{{locations.motive.surfaceMax}}"
+                 min="0" />
+        </div>
+
+        {{#if (gt locations.motive.surfaceMax 0)}}
+          <div class="mcde-stretch-gauge">
+            {{#each (range 1 locations.motive.surfaceMax) as |i|}}
+              <span class="mcde-stretch-seg {{#if (lte i ../locations.motive.surfaceCur)}}filled{{/if}}"
+                    data-loc="motive"
+                    data-track="surfaceCur"
+                    data-idx="{{i}}"></span>
+            {{/each}}
+          </div>
+        {{/if}}
+
+        <div class="mcde-trackboxes">
+          {{#each (range 1 locations.motive.surfaceMax) as |i|}}
+            <span class="mcde-box {{#if (lte i ../locations.motive.surfaceCur)}}filled{{/if}}"
+                  data-loc="motive" data-track="surfaceCur" data-idx="{{i}}"></span>
+          {{/each}}
+        </div>
+      </div>
+
+      <!-- System -->
+      <div class="mcde-loc-track">
+        <div class="mcde-loc-track-row">
+          <div class="mcde-loc-track-label">System</div>
+          <input class="mcde-loc-max"
+                 name="system.locations.motive.systemMax"
+                 type="number"
+                 value="{{locations.motive.systemMax}}"
+                 min="0" />
+        </div>
+
+        {{#if (gt locations.motive.systemMax 0)}}
+          <div class="mcde-stretch-gauge">
+            {{#each (range 1 locations.motive.systemMax) as |i|}}
+              <span class="mcde-stretch-seg {{#if (lte i ../locations.motive.systemCur)}}filled{{/if}}"
+                    data-loc="motive"
+                    data-track="systemCur"
+                    data-idx="{{i}}"></span>
+            {{/each}}
+          </div>
+        {{/if}}
+
+        <div class="mcde-trackboxes">
+          {{#each (range 1 locations.motive.systemMax) as |i|}}
+            <span class="mcde-box {{#if (lte i ../locations.motive.systemCur)}}filled{{/if}}"
+                  data-loc="motive" data-track="systemCur" data-idx="{{i}}"></span>
+          {{/each}}
+        </div>
+      </div>
+
+      <!-- Structural -->
+      <div class="mcde-loc-track">
+        <div class="mcde-loc-track-row">
+          <div class="mcde-loc-track-label">Structural</div>
+          <input class="mcde-loc-max"
+                 name="system.locations.motive.structuralMax"
+                 type="number"
+                 value="{{locations.motive.structuralMax}}"
+                 min="0" />
+        </div>
+
+        {{#if (gt locations.motive.structuralMax 0)}}
+          <div class="mcde-stretch-gauge">
+            {{#each (range 1 locations.motive.structuralMax) as |i|}}
+              <span class="mcde-stretch-seg {{#if (lte i ../locations.motive.structuralCur)}}filled{{/if}}"
+                    data-loc="motive"
+                    data-track="structuralCur"
+                    data-idx="{{i}}"></span>
+            {{/each}}
+          </div>
+        {{/if}}
+
+        <div class="mcde-trackboxes">
+          {{#each (range 1 locations.motive.structuralMax) as |i|}}
+            <span class="mcde-box {{#if (lte i ../locations.motive.structuralCur)}}filled{{/if}}"
+                  data-loc="motive" data-track="structuralCur" data-idx="{{i}}"></span>
+          {{/each}}
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</div>
+
+      <!-- NOTES (Foundry native editor) -->
+      <div class="tab" data-group="primary" data-tab="notes">
+        {{#if editable}}
+          <prose-mirror name="system.notes" button="true" toggled="true" editable="{{editable}}" value="{{system.notes}}">{{{system.notes}}}</prose-mirror>
+        {{else}}
+          <div class="editor"><div class="editor-content ProseMirror">{{{system.notes}}}</div></div>
+        {{/if}}
+      </div>
+
+    </section>
+  </div>
+
+</div>

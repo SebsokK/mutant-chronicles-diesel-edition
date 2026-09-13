@@ -1,0 +1,124 @@
+<div class="flexcol">
+
+  <!-- HEADER -->
+  <header class="sheet-header flexrow" style="gap:12px; align-items:flex-start;">
+    <img class="profile-img"
+         src="{{item.img}}"
+         data-action="editImage"
+         data-field="img"
+         title="{{item.name}}"
+         style="width:64px; height:64px; object-fit:cover;"/>
+
+    <div class="flexcol" style="flex:1; min-width:0; gap:6px;">
+      <h1 style="margin:0;">
+        <input name="name" type="text" value="{{item.name}}" placeholder="Armor Name"/>
+      </h1>
+
+      <div class="flexrow" style="gap:10px; align-items:center; flex-wrap:wrap;">
+        <label style="opacity:0.8;">Faction</label>
+        <input type="text" name="system.faction" value="{{system.faction}}" style="width:180px;"/>
+      </div>
+    </div>
+  </header>
+
+  <hr style="margin:10px 0; opacity:0.35;"/>
+
+  <!-- BODY GRID -->
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; align-items:start;">
+
+    <!-- LEFT: SOAK TABLE -->
+    <section>
+
+<h3 style="margin:0 0 6px 0;">Soak (by Location)</h3>
+
+<table style="width:100%;">
+  <thead>
+    <tr>
+      <th style="text-align:left;">Location</th>
+      <th style="width:80px; text-align:center;">Soak</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Head</td>
+      <td style="text-align:center;">
+        <input type="number" name="system.soak.head" value="{{system.soak.head}}" min="0"
+               style="width:70px; text-align:center;">
+      </td>
+    </tr>
+    <tr>
+      <td>Torso</td>
+      <td style="text-align:center;">
+        <input type="number" name="system.soak.torso" value="{{system.soak.torso}}" min="0"
+               style="width:70px; text-align:center;">
+      </td>
+    </tr>
+    <tr>
+      <td>Left Arm</td>
+      <td style="text-align:center;">
+        <input type="number" name="system.soak.left_arm" value="{{system.soak.left_arm}}" min="0"
+               style="width:70px; text-align:center;">
+      </td>
+    </tr>
+    <tr>
+      <td>Right Arm</td>
+      <td style="text-align:center;">
+        <input type="number" name="system.soak.right_arm" value="{{system.soak.right_arm}}" min="0"
+               style="width:70px; text-align:center;">
+      </td>
+    </tr>
+    <tr>
+      <td>Legs</td>
+      <td style="text-align:center;">
+        <input type="number" name="system.soak.legs" value="{{system.soak.legs}}" min="0"
+               style="width:70px; text-align:center;">
+      </td>
+    </tr>
+  </tbody>
+</table>
+    </section>
+
+    <!-- RIGHT: META -->
+    <section>
+      <h3 style="margin:0 0 6px 0;">Properties</h3>
+
+      <div class="flexcol" style="gap:8px;">
+
+        <div class="flexrow" style="gap:8px; align-items:center;">
+          <label style="width:140px; opacity:0.8;">Encumbrance</label>
+          <input type="text" name="system.encumbrance" value="{{system.encumbrance}}" style="flex:1;">
+        </div>
+
+        <div class="flexrow" style="gap:8px; align-items:center;">
+          <label style="width:140px; opacity:0.8;">Restriction</label>
+          <input type="text" name="system.restriction" value="{{system.restriction}}" style="flex:1;">
+        </div>
+
+        <div class="flexrow" style="gap:8px; align-items:center;">
+          <label style="width:140px; opacity:0.8;">Cost</label>
+          <input type="text" name="system.cost" value="{{system.cost}}" style="flex:1;">
+        </div>
+
+                <div class="flexrow" style="gap:8px; align-items:center;">
+          <label style="width:140px; opacity:0.8;">Reliability</label>
+          <input type="text" name="system.reliability" value="{{system.reliability}}" style="flex:1;">
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <hr style="margin:10px 0; opacity:0.35;"/>
+
+  <!-- DESCRIPTION -->
+  <section>
+    <h3 style="margin:0 0 6px 0;">Description</h3>
+    {{#if editable}}
+      <prose-mirror name="system.description" button="true" toggled="true" editable="{{editable}}" value="{{system.description}}">{{{enriched.description}}}</prose-mirror>
+    {{else}}
+      <div class="editor"><div class="editor-content ProseMirror">{{{enriched.description}}}</div></div>
+    {{/if}}
+  </section>
+
+</div>

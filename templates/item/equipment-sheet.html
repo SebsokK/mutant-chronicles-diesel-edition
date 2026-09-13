@@ -1,0 +1,58 @@
+<div class="flexcol">
+
+  <header class="sheet-header flexrow" style="gap:12px; align-items:center;">
+    <img class="profile-img" src="{{item.img}}" data-action="editImage" data-field="img" width="64" height="64"/>
+    <div class="flexcol" style="flex:1;">
+      <h1 style="margin:0;">
+        <input name="name" type="text" value="{{item.name}}" placeholder="Equipment"/>
+      </h1>
+    </div>
+  </header>
+
+  <section class="sheet-body flexcol" style="gap:10px; margin-top:10px;">
+
+    <!-- Small numeric-ish fields (stored as text, but UI constrained) -->
+    <div class="flexrow" style="gap:10px; flex-wrap:wrap;">
+      <label style="display:flex; flex-direction:column; gap:4px; width:110px;">
+        <span>Load</span>
+        <input name="system.load" type="text" value="{{system.load}}" inputmode="numeric" placeholder=""/>
+      </label>
+
+      <label style="display:flex; flex-direction:column; gap:4px; width:140px;">
+        <span>Encumbrance</span>
+        <input name="system.encumbrance" type="text" value="{{system.encumbrance}}" inputmode="numeric" placeholder=""/>
+      </label>
+
+      <label style="display:flex; flex-direction:column; gap:4px; width:130px;">
+        <span>Reliability</span>
+        <input name="system.reliability" type="text" value="{{system.reliability}}" inputmode="numeric" placeholder=""/>
+      </label>
+
+      <label style="display:flex; flex-direction:column; gap:4px; width:130px;">
+        <span>Restriction</span>
+        <input name="system.restriction" type="text" value="{{system.restriction}}" inputmode="numeric" placeholder=""/>
+      </label>
+
+      <label style="display:flex; flex-direction:column; gap:4px; width:110px;">
+        <span>Cost</span>
+        <input name="system.cost" type="text" value="{{system.cost}}" inputmode="numeric" placeholder=""/>
+      </label>
+
+      <label style="display:flex; flex-direction:column; gap:4px; width:140px;">
+        <span>Maintenance</span>
+        <input name="system.maintenance" type="text" value="{{system.maintenance}}" inputmode="numeric" placeholder=""/>
+      </label>
+    </div>
+
+    <!-- Foundry native rich text editor -->
+    <div class="flexcol" style="gap:6px;">
+      <h3 style="margin:0;">Description</h3>
+      {{#if editable}}
+        <prose-mirror name="system.description" button="true" toggled="true" editable="{{editable}}" value="{{system.description}}">{{{enriched.description}}}</prose-mirror>
+      {{else}}
+        <div class="editor"><div class="editor-content ProseMirror">{{{enriched.description}}}</div></div>
+      {{/if}}
+    </div>
+
+  </section>
+</div>

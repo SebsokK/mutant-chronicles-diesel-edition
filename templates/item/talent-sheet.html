@@ -1,0 +1,59 @@
+<div class="flexcol">
+
+<style>
+  /* Make Foundry visible without global CSS */
+  .mcde.sheet.item.talent .editor { min-height: 260px; }
+  .mcde.sheet.item.talent .editor .editor-content { min-height: 260px; }
+  .mcde.sheet.item.talent .editor .editor-content.ProseMirror { min-height: 260px; }
+</style>
+
+  <header class="sheet-header flexrow" style="gap:12px; align-items:center;">
+    <img class="profile-img" src="{{item.img}}" data-action="editImage" data-field="img" width="64" height="64"/>
+    <div class="flexcol" style="flex:1;">
+      <h1 style="margin:0;">
+        <input name="name" type="text" value="{{item.name}}" placeholder="Talent Name"/>
+      </h1>
+      <div style="opacity:0.8; font-size:12px;">Talent</div>
+    </div>
+  </header>
+
+  <section class="sheet-body flexcol" style="gap:12px; padding-top:8px;">
+
+    <details open>
+      <summary style="cursor:pointer; font-weight:600;">Details</summary>
+
+      <div class="flexcol" style="gap:8px; margin-top:8px;">
+        <div class="flexrow" style="gap:8px; align-items:center;">
+          <label style="flex:1;">Tier</label>
+          <input type="number" name="system.tier" value="{{system.tier}}" style="width:90px;">
+        </div>
+
+        <div class="flexrow" style="gap:8px; align-items:center;">
+          <label style="flex:1;">Talent Tree</label>
+          <input type="text" name="system.category" value="{{system.category}}" placeholder="Combat / Social / Tech..." style="width:100%;">
+        </div>
+
+        <div class="flexrow" style="gap:8px; align-items:center;">
+          <label style="flex:1;">Prerequisite</label>
+          <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" placeholder="e.g. STR 8, Talent X..." style="width:100%;">
+        </div>
+
+      </div>
+    </details>
+
+    <details open>
+<h3 style="margin-top:12px;">Description</h3>
+
+{{#if editable}}
+  <div style="min-height:220px;">
+    <prose-mirror name="system.description" button="true" toggled="true" editable="{{editable}}" value="{{system.description}}">{{{enriched.description}}}</prose-mirror>
+  </div>
+{{else}}
+  <div class="mcde-readonly editor" style="min-height:220px;">
+    <div class="editor-content ProseMirror">{{{dsify enriched.description}}}</div>
+  </div>
+{{/if}}
+    </details>
+
+  </section>
+</div>

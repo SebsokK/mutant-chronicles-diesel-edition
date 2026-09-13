@@ -1,0 +1,205 @@
+<div class="mcde-hitloc-panel">
+{{!-- LOC DOLL BUTTONS (anchored to hitloc-panel, not loc-wrap) --}}
+<div class="mcde-loc-controls">
+  <button type="button"
+          class="mcde-btn mcde-btn--battleworn mcde-btn--rivets mcde-btn--compact"
+          data-action="loc-rest">
+    Rest
+  </button>
+
+  <button type="button"
+          class="mcde-btn mcde-btn--rivets mcde-btn--compact"
+          data-action="loc-set-wounds">
+    Set Wounds
+  </button>
+</div>
+
+<div class="mcde-loc-wrap">
+  <div class="mcde-loc-bg"></div>
+
+  {{!-- HEAD --}}
+  <div class="mcde-loc" style="top:18px; left:114px;">
+    <div class="mcde-loc-frame">
+      <div class="mcde-loc-soakrow">
+        <span class="mcde-loc-soaklabel">Soak</span>
+        <input class="mcde-loc-soak" type="number"
+               name="system.combat.locations.head.soak"
+               value="{{system.combat.locations.head.soak}}">
+      </div>
+
+      <div class="mcde-loc-wounds" data-loc="head">
+        <input class="mcde-loc-current" type="number"
+               name="system.combat.locations.head.current"
+               value="{{system.combat.locations.head.current}}"> /
+        <input class="mcde-loc-max" type="number"
+               name="system.combat.locations.head.max"
+               value="{{system.combat.locations.head.max}}">
+      </div>
+    </div>
+  </div>
+
+  {{!-- TORSO --}}
+  <div class="mcde-loc" style="top:108px; left:114px;">
+    <div class="mcde-loc-frame">
+      <div class="mcde-loc-soakrow">
+        <span class="mcde-loc-soaklabel">Soak</span>
+        <input class="mcde-loc-soak" type="number"
+               name="system.combat.locations.torso.soak"
+               value="{{system.combat.locations.torso.soak}}">
+      </div>
+
+      <div class="mcde-loc-wounds" data-loc="torso">
+        <input class="mcde-loc-current" type="number"
+               name="system.combat.locations.torso.current"
+               value="{{system.combat.locations.torso.current}}"> /
+        <input class="mcde-loc-max" type="number"
+               name="system.combat.locations.torso.max"
+               value="{{system.combat.locations.torso.max}}">
+      </div>
+    </div>
+  </div>
+
+  {{!-- LEFT ARM --}}
+  <div class="mcde-loc" style="top:205px; left:6px;">
+    <div class="mcde-loc-frame">
+      <div class="mcde-loc-soakrow">
+        <span class="mcde-loc-soaklabel">Soak</span>
+        <input class="mcde-loc-soak" type="number"
+               name="system.combat.locations.leftArm.soak"
+               value="{{system.combat.locations.leftArm.soak}}">
+      </div>
+
+      <div class="mcde-loc-wounds" data-loc="leftArm">
+        <input class="mcde-loc-current" type="number"
+               name="system.combat.locations.leftArm.current"
+               value="{{system.combat.locations.leftArm.current}}"> /
+        <input class="mcde-loc-max" type="number"
+               name="system.combat.locations.leftArm.max"
+               value="{{system.combat.locations.leftArm.max}}">
+      </div>
+    </div>
+  </div>
+
+  {{!-- RIGHT ARM --}}
+  <div class="mcde-loc" style="top:205px; left:224px;">
+    <div class="mcde-loc-frame">
+      <div class="mcde-loc-soakrow">
+        <span class="mcde-loc-soaklabel">Soak</span>
+        <input class="mcde-loc-soak" type="number"
+               name="system.combat.locations.rightArm.soak"
+               value="{{system.combat.locations.rightArm.soak}}">
+      </div>
+
+      <div class="mcde-loc-wounds" data-loc="rightArm">
+        <input class="mcde-loc-current" type="number"
+               name="system.combat.locations.rightArm.current"
+               value="{{system.combat.locations.rightArm.current}}"> /
+        <input class="mcde-loc-max" type="number"
+               name="system.combat.locations.rightArm.max"
+               value="{{system.combat.locations.rightArm.max}}">
+      </div>
+    </div>
+  </div>
+
+  {{!-- LEFT LEG --}}
+  <div class="mcde-loc" style="top:342px; left:34px;">
+    <div class="mcde-loc-frame">
+      <div class="mcde-loc-soakrow">
+        <span class="mcde-loc-soaklabel">Soak</span>
+        <input class="mcde-loc-soak" type="number"
+               name="system.combat.locations.leftLeg.soak"
+               value="{{system.combat.locations.leftLeg.soak}}">
+      </div>
+
+      <div class="mcde-loc-wounds" data-loc="leftLeg">
+        <input class="mcde-loc-current" type="number"
+               name="system.combat.locations.leftLeg.current"
+               value="{{system.combat.locations.leftLeg.current}}"> /
+        <input class="mcde-loc-max" type="number"
+               name="system.combat.locations.leftLeg.max"
+               value="{{system.combat.locations.leftLeg.max}}">
+      </div>
+    </div>
+  </div>
+
+  {{!-- RIGHT LEG --}}
+  <div class="mcde-loc" style="top:342px; left:200px;">
+    <div class="mcde-loc-frame">
+      <div class="mcde-loc-soakrow">
+        <span class="mcde-loc-soaklabel">Soak</span>
+        <input class="mcde-loc-soak" type="number"
+               name="system.combat.locations.rightLeg.soak"
+               value="{{system.combat.locations.rightLeg.soak}}">
+      </div>
+
+      <div class="mcde-loc-wounds" data-loc="rightLeg">
+        <input class="mcde-loc-current" type="number"
+               name="system.combat.locations.rightLeg.current"
+               value="{{system.combat.locations.rightLeg.current}}"> /
+        <input class="mcde-loc-max" type="number"
+               name="system.combat.locations.rightLeg.max"
+               value="{{system.combat.locations.rightLeg.max}}">
+      </div>
+    </div>
+  </div>
+
+</div> {{!-- ✅ end mcde-loc-wrap --}}
+
+<div class="mcde-wound-groups">
+
+  <div class="mcde-wound-group" data-track="seriousWounds">
+    <div class="mcde-wound-head">
+      <label>Serious Wounds</label>
+      <input class="mcde-wound-max" type="number" min="0" value="{{woundTracks.serious.max}}">
+    </div>
+    <div class="mcde-wound-track">
+      {{#each woundTracks.serious.boxes as |filled i|}}
+        <div class="mcde-wound-box {{#if filled}}filled{{/if}}" data-index="{{i}}"></div>
+      {{/each}}
+    </div>
+  </div>
+
+  <div class="mcde-wound-group" data-track="criticalWounds">
+    <div class="mcde-wound-head">
+      <label>Critical Wounds</label>
+      <input class="mcde-wound-max" type="number" min="0" value="{{woundTracks.critical.max}}">
+    </div>
+    <div class="mcde-wound-track">
+      {{#each woundTracks.critical.boxes as |filled i|}}
+        <div class="mcde-wound-box {{#if filled}}filled{{/if}}" data-index="{{i}}"></div>
+      {{/each}}
+    </div>
+  </div>
+
+  <div class="mcde-wound-group" data-track="mentalWounds">
+    <div class="mcde-wound-head">
+      <div class="mcde-wound-titleline">
+        <strong>Mental Wounds</strong>
+        <span class="mcde-wound-subtle">/ Tainted</span>
+      </div>
+
+      <div class="mcde-wound-right">
+        <input class="mcde-wound-max"
+               type="number"
+               min="0"
+               value="{{woundTracks.mental.max}}">
+
+        <input class="mcde-tainted-input"
+               type="number"
+               min="0"
+               name="system.combat.tainted"
+               value="{{system.combat.tainted}}">
+      </div>
+    </div>
+
+    <div class="mcde-wound-track">
+      {{#each woundTracks.mental.boxes as |filled i|}}
+        <div class="mcde-wound-box {{#if filled}}filled{{/if}}" data-index="{{i}}"></div>
+      {{/each}}
+    </div>
+  </div>
+
+</div>
+
+</div> {{!-- end mcde-hitloc-panel --}}
+

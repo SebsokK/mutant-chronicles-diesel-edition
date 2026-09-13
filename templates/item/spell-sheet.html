@@ -1,0 +1,52 @@
+<div class="flexcol">
+
+  <header class="sheet-header flexrow" style="gap:12px; align-items:center;">
+    <img class="profile-img" src="{{item.img}}" data-action="editImage" data-field="img" width="64" height="64"/>
+    <div class="flexcol" style="flex:1;">
+      <h1 style="margin:0;">
+        <input name="name" type="text" value="{{item.name}}" placeholder="Spell Name"/>
+      </h1>
+    </div>
+  </header>
+
+  <section class="sheet-body flexcol" style="gap:10px; margin-top:10px;">
+
+    <div class="flexrow" style="gap:10px; flex-wrap:wrap;">
+      <label style="display:flex; flex-direction:column; gap:4px; min-width:120px;">
+        <span>Difficulty</span>
+        <input name="system.difficulty" type="text" value="{{system.difficulty}}" placeholder="D1"/>
+      </label>
+
+      <label style="display:flex; flex-direction:column; gap:4px; flex:1; min-width:180px;">
+        <span>Target</span>
+        <input name="system.target" type="text" value="{{system.target}}" placeholder=""/>
+      </label>
+
+      <label style="display:flex; flex-direction:column; gap:4px; flex:1; min-width:180px;">
+        <span>Duration</span>
+        <input name="system.duration" type="text" value="{{system.duration}}" placeholder=""/>
+      </label>
+    </div>
+
+    <div class="flexcol" style="gap:6px;">
+  <h3 style="margin:0;">Base Effect</h3>
+  {{#if editable}}
+    <prose-mirror name="system.baseEffect" button="true" toggled="true" editable="{{editable}}" value="{{system.baseEffect}}">{{{enriched.baseEffect}}}</prose-mirror>
+  {{else}}
+    <div class="editor"><div class="editor-content ProseMirror">{{{enriched.baseEffect}}}</div></div>
+  {{/if}}
+</div>
+
+<div class="flexcol" style="gap:6px;">
+  <h3 style="margin:0;">Momentum Spends</h3>
+  {{#if editable}}
+    <prose-mirror name="system.momentum" button="true" toggled="true" editable="{{editable}}" value="{{system.momentum}}">{{{enriched.momentum}}}</prose-mirror>
+  {{else}}
+    <div class="editor"><div class="editor-content ProseMirror">{{{enriched.momentum}}}</div></div>
+  {{/if}}
+</div>
+
+
+
+  </section>
+</div>
