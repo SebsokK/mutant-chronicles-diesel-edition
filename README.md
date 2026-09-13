@@ -40,7 +40,7 @@ This is a fan-made Foundry VTT system implementing the *Mutant Chronicles 2D20, 
 In Foundry VTT, go to **Game Systems → Install System** and paste the following manifest URL:
 
 ```
-https://raw.githubusercontent.com/zefyriss-glitch/mutant-chronicles-diesel-edition/main/system.json
+https://raw.githubusercontent.com/SebsokK/mutant-chronicles-diesel-edition/main/system.json
 ```
 
 ## Compatibility
