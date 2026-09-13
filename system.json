@@ -2,7 +2,7 @@
   "id": "mutant-chronicles-diesel-edition",
   "title": "Mutant Chronicles – Diesel Edition",
   "description": "A Foundry VTT system for Mutant Chronicles 2D20, Diesel Edition.",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "authors": [
     {
       "name": "SokK & ChatGPT"
@@ -132,5 +132,5 @@
 
   "url": "https://github.com/zefyriss-glitch/mutant-chronicles-diesel-edition",
   "manifest": "https://raw.githubusercontent.com/zefyriss-glitch/mutant-chronicles-diesel-edition/main/system.json",
-  "download": "https://github.com/zefyriss-glitch/mutant-chronicles-diesel-edition/releases/download/v0.1.6/mutant-chronicles-diesel-edition-v0.1.6.zip"
+  "download": "https://github.com/zefyriss-glitch/mutant-chronicles-diesel-edition/releases/download/v0.2.0/mutant-chronicles-diesel-edition-v0.2.0.zip"
 }
